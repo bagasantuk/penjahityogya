@@ -4,8 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.RegistrasiActivity"
+    tools:context=".Penjahit.RegistrasiMitra">
     android:background="#ffffff">
+
+    <EditText
+        android:id="@+id/regMitraAlamat"
+        android:layout_width="265dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/reg_edittext_style"
+        android:ems="10"
+        android:hint="Alamat"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/regMitraTelp" />
+
+    <ImageView
+        android:id="@+id/regMitraPhoto"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/userphoto"
+        app:layout_constraintBottom_toTopOf="@+id/regMitraUsaha"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -14,18 +43,8 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="365dp" />
 
-    <ProgressBar
-        android:id="@+id/regProgressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/regBtn"
-        app:layout_constraintEnd_toEndOf="@+id/regBtn"
-        app:layout_constraintStart_toStartOf="@+id/regBtn"
-        app:layout_constraintTop_toTopOf="@+id/regBtn" />
-
     <EditText
-        android:id="@+id/regName"
+        android:id="@+id/regMitraUsaha"
         android:layout_width="265dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -33,19 +52,19 @@
         android:layout_marginBottom="4dp"
         android:background="@drawable/reg_edittext_style"
         android:ems="10"
-        android:hint="Name"
+        android:hint="Nama Usaha"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/regMail"
+        app:layout_constraintBottom_toTopOf="@+id/regMitraMail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/regMail"
+        android:id="@+id/regMitraMail"
         android:layout_width="265dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="12dp"
         android:background="@drawable/reg_edittext_style"
         android:ems="10"
         android:hint="Mail"
@@ -55,22 +74,22 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/regTelp"
+        android:background="@drawable/reg_edittext_style"
+        android:hint="No Telepon"
+        android:id="@+id/regMitraTelp"
         android:layout_width="265dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/reg_edittext_style"
         android:ems="10"
-        android:hint="No Telepon"
         android:inputType="textPersonName|numberDecimal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/regMail" />
+        app:layout_constraintTop_toBottomOf="@+id/regMitraMail" />
 
     <EditText
-        android:id="@+id/regPassword"
+        android:id="@+id/regMItraPassword"
         android:layout_width="265dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -82,39 +101,25 @@
         android:inputType="textPersonName|textPassword|textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/regTelp" />
+        app:layout_constraintTop_toBottomOf="@+id/regMitraAlamat" />
 
     <EditText
-        android:id="@+id/regPassword2"
+        android:background="@drawable/reg_edittext_style"
+        android:hint="Confirm Password"
+        android:id="@+id/regMitraPassword2"
         android:layout_width="265dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/reg_edittext_style"
         android:ems="10"
-        android:hint="Confirm Password"
         android:inputType="textPersonName|textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/regPassword" />
-
-    <ImageView
-        android:id="@+id/regUserPhoto"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:src="@drawable/userphoto"
-        app:layout_constraintBottom_toTopOf="@+id/regName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/regMItraPassword" />
 
     <Button
-        android:id="@+id/regBtn"
+        android:id="@+id/regMitraBtn"
         android:layout_width="143dp"
         android:layout_height="38dp"
         android:layout_marginStart="8dp"
@@ -127,7 +132,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/regPassword2" />
+        app:layout_constraintTop_toBottomOf="@+id/regMitraPassword2" />
 
+    <ProgressBar
+        android:id="@+id/regProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/regMitraBtn"
+        app:layout_constraintEnd_toEndOf="@+id/regMitraBtn"
+        app:layout_constraintStart_toStartOf="@+id/regMitraBtn"
+        app:layout_constraintTop_toTopOf="@+id/regMitraBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

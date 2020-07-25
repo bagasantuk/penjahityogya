@@ -1,4 +1,4 @@
-package com.example.penjahityogya.activities;
+package com.example.penjahityogya.Penjahit;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,40 +14,42 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.penjahityogya.Penjahit.LoginMitra;
 import com.example.penjahityogya.R;
+import com.example.penjahityogya.Penjahit.HomeMitra;
+import com.example.penjahityogya.Penjahit.LoginMitra;
+import com.example.penjahityogya.activities.PenjahitActivity;
+import com.example.penjahityogya.Penjahit.RegistrasiMitra;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class LoginActivity extends AppCompatActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+
+import com.example.penjahityogya.R;
+
+public class LoginMitra extends AppCompatActivity {
     private EditText edtEmail, edtPassword;
-    private Button btnLogin;
-    private TextView btnMitra;
-    private TextView btnRegister;
+    private Button btnMitraLogin;
+    private TextView btnMItraRegister;
     private FirebaseAuth auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
+        setContentView(R.layout.activity_login_mitra);
         initView();
         login();
     }
 
     private void login() {
-        btnRegister.setOnClickListener(new View.OnClickListener() {
+        btnMItraRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, RegistrasiActivity.class));
+                startActivity(new Intent(LoginMitra.this, RegistrasiMitra.class));
             }
         });
-        btnMitra.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, LoginMitra.class));
-            }
-        });
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        btnMitraLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -73,12 +75,12 @@ public class LoginActivity extends AppCompatActivity {
                     edtPassword.setError("Password minimal terdiri dari 6 karakter");
                 } else {
                     auth.signInWithEmailAndPassword(emailUser, passwordUser)
-                            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                            .addOnCompleteListener(LoginMitra.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     // ketika gagal locin maka akan do something
                                     if (!task.isSuccessful()) {
-                                        Toast.makeText(LoginActivity.this,
+                                        Toast.makeText(LoginMitra.this,
                                                 "Gagal login karena " + task.getException().getMessage()
                                                 , Toast.LENGTH_LONG).show();
                                     } else {
@@ -86,11 +88,11 @@ public class LoginActivity extends AppCompatActivity {
                                         bundle.putString("email", emailUser);
                                         bundle.putString("pass", passwordUser);
                                         if (!emailUser.equals("admin@gmail.com")&&!passwordUser.equals("admin123")){
-                                            startActivity(new Intent(LoginActivity.this, Home.class)
+                                            startActivity(new Intent(LoginMitra.this, HomeMitra.class)
                                                     .putExtra("emailpass", bundle));
                                             finish();
                                         }else{
-                                            startActivity(new Intent(LoginActivity.this,PenjahitActivity.class)
+                                            startActivity(new Intent(LoginMitra.this, PenjahitActivity.class)
                                                     .putExtra("emailpass", bundle));
                                             finish();
 
@@ -105,11 +107,10 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
     private void initView() {
-        edtEmail = findViewById(R.id.logEmail);
-        edtPassword = findViewById(R.id.logPassword);
-        btnLogin = findViewById(R.id.logBtn);
-        btnRegister = findViewById(R.id.logBtnReg);
-        btnMitra = findViewById(R.id.logBtnMitra);
+        edtEmail = findViewById(R.id.logmitraEmail);
+        edtPassword = findViewById(R.id.logmitraPassword);
+        btnMitraLogin = findViewById(R.id.logmitraBtn);
+        btnMItraRegister = findViewById(R.id.logBtnRegMitra);
         auth = FirebaseAuth.getInstance();
     }
 }

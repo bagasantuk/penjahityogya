@@ -16,9 +16,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.penjahityogya.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -118,8 +116,8 @@ public class Home extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = headerView.findViewById(R.id.nav_username);
-        TextView navUserMail = headerView.findViewById(R.id.nav_user_mail);
-        ImageView navUserPhoto = headerView.findViewById(R.id.nav_user_photo);
+        TextView navUserMail = headerView.findViewById(R.id.nav_mitra_mail);
+        ImageView navUserPhoto = headerView.findViewById(R.id.nav_mitra_photo);
 
         navUserMail.setText (currentUser.getEmail());
         navUsername.setText(currentUser.getDisplayName());
