@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -55,6 +56,7 @@ public class RegistrasiMitra extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrasi_mitra);
 
+
         //ini views
         mitraEmail = findViewById(R.id.regMitraMail);
         mitraPassword = findViewById(R.id.regMItraPassword);
@@ -69,7 +71,7 @@ public class RegistrasiMitra extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
-
+        mAuth.signOut();
 
         regMitraBtn.setOnClickListener(new View.OnClickListener() {
             Intent intent = new Intent(RegistrasiMitra.this, LoginMitra.class);
@@ -160,7 +162,7 @@ public class RegistrasiMitra extends AppCompatActivity {
         String mitrausaha = mitraUsaha.getText().toString();
 
         // membuat User admin baru
-        writeNewmitra(mitra.getUid(), mitrausaha, mitra.getEmail(), mitraAlamat.getText().toString(),mitraTelp.getText().toString(),mitraPassword.getText().toString());
+        writeNewmitra(mitra.getUid(), mitrausaha, mitra.getEmail(),mitraTelp.getText().toString(),mitraPassword.getText().toString(), mitraAlamat.getText().toString());
 
         // Go to MainActivity
         startActivity(new Intent(RegistrasiMitra.this, LoginMitra.class));
