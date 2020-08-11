@@ -1,7 +1,5 @@
 package com.example.penjahityogya.activities;
 
-import android.widget.TextView;
-
 public class UserHelperClass {
 
     String userId, name, email, Telp, password;

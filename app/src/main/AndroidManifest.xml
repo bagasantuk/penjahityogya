@@ -9,6 +9,8 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -32,27 +34,34 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".activities.MapsActivity"
-            android:label="@string/title_activity_maps"/>
-
-        <activity android:name=".Penjahit.HomeMitra" />
-        <activity android:name=".Penjahit.RegistrasiMitra" />
-        <activity android:name=".Penjahit.LoginMitra" />
-        <activity android:name=".activities.Profile" />
+            android:name="com.example.penjahityogya.activities.MapsActivity"
+            android:label="@string/title_activity_maps"></activity>
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <activity android:name="com.example.penjahityogya.Penjahit.HomeMitra" />
+        <activity android:name="com.example.penjahityogya.Penjahit.RegistrasiMitra" />
+        <activity android:name="com.example.penjahityogya.Penjahit.LoginMitra" />
+        <activity android:name="com.example.penjahityogya.activities.Profile" />
         <activity
-            android:name=".activities.Home"
+            android:name="com.example.penjahityogya.activities.Home"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.MainActivity" />
-        <activity android:name=".activities.PenjahitActivity" />
-        <activity android:name=".activities.HomeActivity" />
-        <activity android:name=".activities.RegistrasiActivity" />
-        <activity android:name=".activities.LoginActivity" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+        <activity android:name="com.example.penjahityogya.activities.MainActivity" />
+        <activity android:name="com.example.penjahityogya.activities.PenjahitActivity" />
+        <activity android:name="com.example.penjahityogya.activities.HomeActivity" />
+        <activity android:name="com.example.penjahityogya.activities.RegistrasiActivity" />
+        <activity android:name="com.example.penjahityogya.activities.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

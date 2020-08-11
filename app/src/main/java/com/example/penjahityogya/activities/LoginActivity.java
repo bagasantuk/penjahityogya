@@ -32,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
         initView();
         login();
+
     }
 
     private void login() {

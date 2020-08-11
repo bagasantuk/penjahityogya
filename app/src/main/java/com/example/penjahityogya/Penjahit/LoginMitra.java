@@ -12,22 +12,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.penjahityogya.Penjahit.LoginMitra;
 import com.example.penjahityogya.R;
-import com.example.penjahityogya.Penjahit.HomeMitra;
-import com.example.penjahityogya.Penjahit.LoginMitra;
 import com.example.penjahityogya.activities.PenjahitActivity;
-import com.example.penjahityogya.Penjahit.RegistrasiMitra;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
-
-import com.example.penjahityogya.R;
 
 public class LoginMitra extends AppCompatActivity {
     private EditText edtEmail, edtPassword;

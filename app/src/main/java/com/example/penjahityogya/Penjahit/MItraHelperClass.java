@@ -1,5 +1,4 @@
 package com.example.penjahityogya.Penjahit;
-import android.widget.TextView;
 
 public class MItraHelperClass {
     String userId, usaha, email, Telp, password, Alamat;
