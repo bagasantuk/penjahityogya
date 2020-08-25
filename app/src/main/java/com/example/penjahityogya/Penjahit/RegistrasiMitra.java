@@ -216,7 +216,7 @@ public class RegistrasiMitra extends AppCompatActivity {
         });
     }
     private void updateUI() {
-        Intent homeActivity = new Intent(getApplicationContext(), HomeMitra.class);
+        Intent homeActivity = new Intent(getApplicationContext(), LoginMitra.class);
         startActivity(homeActivity);
         finish();
     }

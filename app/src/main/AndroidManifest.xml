@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.penjahityogya">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -20,7 +19,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".Penjahit.ProfileMitra"></activity>
+        <activity
+            android:name=".Penjahit.Home_mitra"
+            android:label="@string/title_activity_home_mitra"
+            android:theme="@style/AppTheme.NoActionBar" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -34,8 +37,8 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="com.example.penjahityogya.activities.MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:name=".activities.MapsActivity"
+            android:label="@string/title_activity_maps" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -44,19 +47,19 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
-        <activity android:name="com.example.penjahityogya.Penjahit.HomeMitra" />
-        <activity android:name="com.example.penjahityogya.Penjahit.RegistrasiMitra" />
-        <activity android:name="com.example.penjahityogya.Penjahit.LoginMitra" />
-        <activity android:name="com.example.penjahityogya.activities.Profile" />
+        <activity android:name=".Penjahit.HomeMitra" />
+        <activity android:name=".Penjahit.RegistrasiMitra" />
+        <activity android:name=".Penjahit.LoginMitra" />
+        <activity android:name=".activities.Profile" />
         <activity
-            android:name="com.example.penjahityogya.activities.Home"
+            android:name=".activities.Home"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="com.example.penjahityogya.activities.MainActivity" />
-        <activity android:name="com.example.penjahityogya.activities.PenjahitActivity" />
-        <activity android:name="com.example.penjahityogya.activities.HomeActivity" />
-        <activity android:name="com.example.penjahityogya.activities.RegistrasiActivity" />
-        <activity android:name="com.example.penjahityogya.activities.LoginActivity">
+        <activity android:name=".activities.MainActivity" />
+        <activity android:name=".activities.PenjahitActivity" />
+        <activity android:name=".activities.HomeActivity" />
+        <activity android:name=".activities.RegistrasiActivity" />
+        <activity android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

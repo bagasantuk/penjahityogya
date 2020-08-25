@@ -78,7 +78,7 @@ public class LoginMitra extends AppCompatActivity {
                                         bundle.putString("email", emailUser);
                                         bundle.putString("pass", passwordUser);
                                         if (!emailUser.equals("admin@gmail.com")&&!passwordUser.equals("admin123")){
-                                            startActivity(new Intent(LoginMitra.this, HomeMitra.class)
+                                            startActivity(new Intent(LoginMitra.this, Home_mitra.class)
                                                     .putExtra("emailpass", bundle));
                                             finish();
                                         }else{
