@@ -19,7 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Penjahit.ProfileMitra"></activity>
+        <activity android:name=".Penjahit.TambahProdukMitra"></activity>
+        <activity android:name=".Penjahit.Produk" />
+        <activity android:name=".Penjahit.ProfileMitra" />
         <activity
             android:name=".Penjahit.Home_mitra"
             android:label="@string/title_activity_home_mitra"

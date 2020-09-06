@@ -104,7 +104,9 @@ public class Home_mitra extends AppCompatActivity
         } else if (id == R.id.nav_mitraprofil) {
             Intent intent = new Intent(Home_mitra.this, ProfileMitra.class);
             startActivity(intent);
-
+        } else if (id == R.id.nav_mitraproduk) {
+            Intent intent = new Intent(Home_mitra.this, Produk.class);
+            startActivity(intent);
         } else if (id == R.id.nav_mitraabout) {
 
         } else if (id == R.id.nav_mitralogout) {
