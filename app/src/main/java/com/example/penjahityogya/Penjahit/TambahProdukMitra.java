@@ -41,7 +41,7 @@ public class TambahProdukMitra extends AppCompatActivity {
     private Uri ImageUri;
     private String productRandomKey, downloadImageUrl;
     private StorageReference ProductImagesRef;
-    private DatabaseReference ProductRef;
+    private DatabaseReference ProductsRef;
     private ProgressDialog loadingBar;
 
     @Override
@@ -49,10 +49,9 @@ public class TambahProdukMitra extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tambah_produk_mitra);
 
-
-        CategoryName = getIntent().getExtras().get("Category").toString();
+        CategoryName = getIntent().getExtras().get("category").toString();
         ProductImagesRef = FirebaseStorage.getInstance().getReference().child("Product Images");
-        ProductRef = FirebaseDatabase.getInstance().getReference().child("Products");
+        ProductsRef = FirebaseDatabase.getInstance().getReference().child("Products");
 
         AddNewProductButton = (Button) findViewById(R.id.add_new_product);
         InputProductImage = (ImageView) findViewById(R.id.select_product_image);
@@ -140,7 +139,7 @@ public class TambahProdukMitra extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
 
-        SimpleDateFormat currentDate = new SimpleDateFormat("MMM.dd.yyyy");
+        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
         saveCurrentDate = currentDate.format(calendar.getTime());
 
         SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss a");
@@ -185,6 +184,7 @@ public class TambahProdukMitra extends AppCompatActivity {
                     {
                         if(task.isSuccessful())
                         {
+                            downloadImageUrl = task.getResult().toString();
                             Toast.makeText(TambahProdukMitra.this,"got the Product Image Url Successfully..."  ,Toast.LENGTH_SHORT).show();
 
                             SaveProductInfoToDatabase();
@@ -202,19 +202,22 @@ public class TambahProdukMitra extends AppCompatActivity {
         productMap.put("pid", productRandomKey);
         productMap.put("date", saveCurrentDate);
         productMap.put("time", saveCurrentTime);
-        productMap.put("discription", Description);
+        productMap.put("description", Description);
         productMap.put("image", downloadImageUrl);
         productMap.put("category", CategoryName);
         productMap.put("price", Price);
         productMap.put("pname", Pname);
 
-        ProductRef.child(productRandomKey).updateChildren(productMap)
+        ProductsRef.child(productRandomKey).updateChildren(productMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task)
                     {
                         if (task.isSuccessful())
                         {
+                            Intent intent = new Intent(TambahProdukMitra.this,Produk.class);
+                            startActivity(intent);
+
                             loadingBar.dismiss();
                             Toast.makeText(TambahProdukMitra.this,"Product is added successfully..."  ,Toast.LENGTH_SHORT).show();
                         }

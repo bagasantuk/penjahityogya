@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
                                         bundle.putString("email", emailUser);
                                         bundle.putString("pass", passwordUser);
                                         if (!emailUser.equals("admin@gmail.com")&&!passwordUser.equals("admin123")){
-                                            startActivity(new Intent(LoginActivity.this, Home.class)
+                                            startActivity(new Intent(LoginActivity.this, Pilih_Lokasi_Pengguna.class)
                                                     .putExtra("emailpass", bundle));
                                             finish();
                                         }else{

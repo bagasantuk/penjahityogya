@@ -17,4 +17,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_maps2">Map</string>
     <string name="title_activity_home_mitra">Home_mitra</string>
+    <string name="place_picker_toolbar_primary_text" />
+    <string name="plugins_place_picker_toolbar_secondary_text" />
+    <string name="str_exit_place_picker" />
 </resources>

@@ -2,6 +2,7 @@ package com.example.penjahityogya.activities;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.location.Geocoder;
 import android.os.Bundle;
 
 import com.example.penjahityogya.R;
@@ -15,7 +16,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-
+    private Geocoder geocoder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,10 +40,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng yogyakarta = new LatLng(	-7.797068, 110.370529);
+        mMap.addMarker(new MarkerOptions().position(yogyakarta).title("Marker in yogya"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(yogyakarta));
     }
 }
