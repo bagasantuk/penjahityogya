@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -16,6 +17,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.penjahityogya.PlacePickerActivity;
 import com.example.penjahityogya.R;
+import com.example.penjahityogya.UserHelperMap;
 import com.example.penjahityogya.helpers.Gxon;
 import com.example.penjahityogya.helpers.LocationTrack;
 import com.example.penjahityogya.models.AgendaModel;
@@ -28,8 +30,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import static com.example.penjahityogya.PlacePickerActivity.REQUEST_PLACE_PICKER;
 
@@ -49,7 +54,8 @@ public class Pilih_Lokasi_Pengguna extends AppCompatActivity
     int maxid = 0;
 
     FirebaseAuth mAuth;
-    FirebaseUser currentUser ;
+    FirebaseUser currentUser;
+    UserHelperMap member;
 
 
     //spinner
@@ -76,7 +82,7 @@ public class Pilih_Lokasi_Pengguna extends AppCompatActivity
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         //getLastID();
-        if(getIntent().hasExtra("data") && getIntent().getStringExtra("data") != null){
+        if (getIntent().hasExtra("data") && getIntent().getStringExtra("data") != null) {
             detailAgenda = Gxon.from(getIntent().getStringExtra("data"), AgendaModel.class);
             tampilData(true);
             valEdit = true;
@@ -93,79 +99,110 @@ public class Pilih_Lokasi_Pengguna extends AppCompatActivity
         btnPickLokasi = findViewById(R.id.btnPilihLokasi);
         btnselesai = findViewById(R.id.btnselesai);
 
-        reff = database.getInstance().getReference().child("Data ");
+        reff = database.getInstance().getReference().child("Data ").child(currentUser.getUid());
+        member = new UserHelperMap();
 
         /*Tool Bar*/
         setSupportActionBar(toolbar);
-        btnselesai.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(android.view.View v) {
-                Intent intent = new Intent(Pilih_Lokasi_Pengguna.this, Home.class);
-                startActivity(intent);
 
-            }
-        });
 
         btnPickLokasi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(android.view.View v) {
                 Intent i = new Intent();
-               i.setClass(Pilih_Lokasi_Pengguna.this, PlacePickerActivity.class);
-               startActivityForResult(i, REQUEST_PLACE_PICKER);
+                i.setClass(Pilih_Lokasi_Pengguna.this, PlacePickerActivity.class);
+                startActivityForResult(i, REQUEST_PLACE_PICKER);
             }
         });
 
-//        btnPickLokasi.setOnClickListener(v -> {
-//            Intent i = new Intent();
-//            i.setClass(this, PlacePickerActivity.class);
-//            startActivityForResult(i, REQUEST_PLACE_PICKER);
-//        });
-}
+        //menyimpan data kedalam database
+
+        reff.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists())
+                    maxid = (int) dataSnapshot.getChildrenCount();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
+        btnselesai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(android.view.View v) {
+                if(resAlamat.getLatitude()!= null&& resAlamat.getLongitude()!=null){
+                    member.setLatitude(resAlamat.getLatitude());
+                    reff.setValue(member);
+                    member.setLongitude(resAlamat.getLongitude());
+                    reff.setValue(member);
+                }
+                Intent intent = new Intent(getApplicationContext(), Home.class);
 
+                intent.putExtra("latitude",resAlamat.getLatitude());
+                intent.putExtra("longitude",resAlamat.getLongitude());
+                intent.putExtra("alamat", tvAlamat.getText().toString());
 
+                AgendaModel data = new AgendaModel();
+                data.setAlamat(tvAlamat.getText().toString());
+                data.setLatitude(String.valueOf(resAlamat.getLatitude()));
+                data.setLongitude(String.valueOf(resAlamat.getLongitude()));
+                intent.putExtra("resAlamat", Gxon.to(data));
+                setResult(AppCompatActivity.RESULT_OK, intent);
+                finish();
 
+                startActivity(intent);
+//                Intent intent = new Intent(Pilih_Lokasi_Pengguna.this, Home.class);
+//                startActivity(intent);
 
-    private void tampilData(boolean valEdit) {
-        tvAlamat.setText(detailAgenda.getAlamat());
-        resAlamat.setLatitude(detailAgenda.getLatitude());
-        resAlamat.setLongitude(detailAgenda.getLongitude());
-        addMarker(detailAgenda);
-
-        tvAlamat.setEnabled(valEdit);
-        //btnPickLokasi.setVisibility(valEdit ? View.VISIBLE:View.GONE);
-        this.valEdit = valEdit;
+            }
+        });
     }
 
-    private void addMarker(AgendaModel data) {
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(new LatLng(Double.parseDouble(data.getLatitude()), Double.parseDouble(data.getLongitude())));
-        markerOptions.title(data.getAlamat());
-        googleMap.clear();
-        googleMap.addMarker(markerOptions);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(data.getLatitude()), Double.parseDouble(data.getLongitude())), 12));
-    }
 
-    @Override
-    public void onMapReady(GoogleMap map) {
-        googleMap = map;
-        // For showing a move to my location button
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
+        private void tampilData ( boolean valEdit){
+            tvAlamat.setText(detailAgenda.getAlamat());
+            resAlamat.setLatitude(detailAgenda.getLatitude());
+            resAlamat.setLongitude(detailAgenda.getLongitude());
+            addMarker(detailAgenda);
+
+            tvAlamat.setEnabled(valEdit);
+            //btnPickLokasi.setVisibility(valEdit ? View.VISIBLE:View.GONE);
+            this.valEdit = valEdit;
         }
-        googleMap.getUiSettings().setZoomControlsEnabled(true);
-        googleMap.setMyLocationEnabled(true);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 14));
-        if(detailAgenda!=null)addMarker(detailAgenda);
 
-    }
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_PLACE_PICKER && resultCode == RESULT_OK) {
-            resAlamat = Gxon.from(data.getStringExtra("resAlamat"), AgendaModel.class);
-            tvAlamat.setText(resAlamat.getAlamat());
-            addMarker(resAlamat);
+        private void addMarker (AgendaModel data){
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(new LatLng(Double.parseDouble(data.getLatitude()), Double.parseDouble(data.getLongitude())));
+            markerOptions.title(data.getAlamat());
+            googleMap.clear();
+            googleMap.addMarker(markerOptions);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(data.getLatitude()), Double.parseDouble(data.getLongitude())), 12));
+        }
+
+        @Override
+        public void onMapReady (GoogleMap map){
+            googleMap = map;
+            // For showing a move to my location button
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            googleMap.getUiSettings().setZoomControlsEnabled(true);
+            googleMap.setMyLocationEnabled(true);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 14));
+            if (detailAgenda != null) addMarker(detailAgenda);
+
+        }
+        public void onActivityResult ( int requestCode, int resultCode, Intent data){
+            super.onActivityResult(requestCode, resultCode, data);
+            if (requestCode == REQUEST_PLACE_PICKER && resultCode == RESULT_OK) {
+                resAlamat = Gxon.from(data.getStringExtra("resAlamat"), AgendaModel.class);
+                tvAlamat.setText(resAlamat.getAlamat());
+                addMarker(resAlamat);
+            }
         }
     }
-}
+
