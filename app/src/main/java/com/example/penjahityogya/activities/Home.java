@@ -48,6 +48,7 @@ public class Home extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home2);
 
+        //untuk database produk
         ProductsRef = FirebaseDatabase.getInstance().getReference().child("Products");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -78,6 +79,7 @@ public class Home extends AppCompatActivity
 
         updateNavHeader();
 
+        //tampilan produk
         recyclerView = findViewById(R.id.recycle_menu);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -105,6 +107,16 @@ public class Home extends AppCompatActivity
                         holder.txtProductDescription.setText(model.getDescription());
                         holder.txtProductPrice.setText("Harga = " +  "Rp." + model.getPrice() );
                         Picasso.get().load(model.getImage()).into(holder.imageView);
+
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view)
+                            {
+                                Intent intent = new Intent(Home.this, ProductDetailActivity.class);
+                                intent.putExtra("pid", model.getPid());
+                                startActivity(intent);
+                            }
+                        });
                     }
 
                     @NonNull
@@ -182,6 +194,7 @@ public class Home extends AppCompatActivity
 
 
     }
+    //TODO: MENAMPILKAN DATA PRODUK PADA HOME
     public void updateNavHeader(){
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);

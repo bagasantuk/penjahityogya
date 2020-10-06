@@ -69,6 +69,7 @@ public class Pilih_Lokasi_Pengguna extends AppCompatActivity
     private Object View;
 
 
+
     //@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
