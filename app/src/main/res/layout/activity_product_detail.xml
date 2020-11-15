@@ -76,4 +76,30 @@
         android:textColor="@android:color/white"
         android:textSize="18dp"
         />
+
+    <RadioGroup
+        android:id="@+id/rbg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/number_btn">
+
+        <RadioButton
+            android:id="@+id/pertama"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/number_btn"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="Bahan dari penjahit  ( + Rp. 50000 )" />
+
+        <RadioButton
+            android:id="@+id/kedua"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pertama"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="Bahan dari pelanggan" />
+
+    </RadioGroup>
 </RelativeLayout>

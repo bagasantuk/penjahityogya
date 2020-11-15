@@ -1,19 +1,21 @@
-package com.example.penjahityogya.Penjahit;
+package com.example.penjahityogya.models;
 
-public class MItraHelperClass {
-    String userId, usaha, email, Telp, password, Alamat, Jam, latitude, longitude;
+public class Mitra {
+    String userId, usaha, email, Telp, password, Alamat, Jam, image, Jarak, longitude, latitude;
 
-    public MItraHelperClass() {
+    public Mitra() {
     }
 
-    public MItraHelperClass(String userId, String usaha, String email, String Telp, String password, String Alamat, String Jam, String longitude, String latitude) {
+    public Mitra(String userId, String usaha, String email, String Telp, String password, String Alamat, String Jam, String image, String Jarak, String longitude, String latitude) {
         this.userId= userId;
         this.usaha = usaha;
         this.email = email;
         this.Telp = Telp;
         this.password = password;
+        this.image = image;
         this.Alamat = Alamat;
         this.Jam = Jam;
+        this.Jarak = Jarak;
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -70,16 +72,22 @@ public class MItraHelperClass {
         return Jam;
     }
 
-    public void setJam(String jam) {
-        Jam = jam;
+    public void setJam(String jam) { Jam = jam; }
+
+    public String getImage() {
+        return image;
     }
 
-    public String getLatitude() {
-        return latitude;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
+    public String getJarak() {
+        return Jarak;
+    }
+
+    public void setJarak(String jarak) {
+        Jarak = jarak;
     }
 
     public String getLongitude() {
@@ -88,5 +96,13 @@ public class MItraHelperClass {
 
     public void setLongitude(String longitude) {
         this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 }

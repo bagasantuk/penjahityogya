@@ -9,6 +9,14 @@
             android:icon="@drawable/ic_home_black_24dp"
             android:title="@string/menu_home" />
         <item
+            android:id="@+id/nav_cart"
+            android:icon="@drawable/ic_shopping_cart_black_24dp"
+            android:title="Cart" />
+        <item
+            android:id="@+id/nav_pemesanan"
+            android:icon="@drawable/ic_shopping_basket_black_24dp"
+            android:title="Status Pemesanan" />
+        <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_person_black_24dp"
             android:title="Profile" />

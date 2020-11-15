@@ -1,6 +1,7 @@
 package com.example.penjahityogya.activities;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -23,24 +25,36 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.penjahityogya.R;
 import com.example.penjahityogya.ViewHolder.ProductViewHolder;
+import com.example.penjahityogya.ViewHolder.MitraViewHolder;
+import com.example.penjahityogya.models.Mitra;
 import com.example.penjahityogya.models.Products;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.rey.material.widget.FloatingActionButton;
 import com.squareup.picasso.Picasso;
+
+import java.text.DecimalFormat;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     FirebaseAuth mAuth;
     FirebaseUser currentUser ;
-    private DatabaseReference ProductsRef;
+    private DatabaseReference MitraRef,reference;
     private RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
+    String idMitra,jarak;
+    double toKM, latitude,longitude;
+    Location locationA = new Location("Location A");
+    Location locationB = new Location("Location B");
 
 
     @Override
@@ -49,7 +63,7 @@ public class Home extends AppCompatActivity
         setContentView(R.layout.activity_home2);
 
         //untuk database produk
-        ProductsRef = FirebaseDatabase.getInstance().getReference().child("Products");
+        MitraRef = FirebaseDatabase.getInstance().getReference().child("mitra");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -62,6 +76,16 @@ public class Home extends AppCompatActivity
 //            }
 //        });
         // ini
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(Home.this, CartActivity.class);
+                intent.putExtra("idMitra",idMitra);
+                startActivity(intent);
+            }
+        });
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
@@ -84,6 +108,21 @@ public class Home extends AppCompatActivity
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        reference = FirebaseDatabase.getInstance().getReference().child("Data").child(currentUser.getUid());
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child("latitude").getValue()!=null && dataSnapshot.child("longitude").getValue()!=null) {
+                    latitude = Double.parseDouble(dataSnapshot.child("latitude").getValue().toString());
+                    longitude = Double.parseDouble(dataSnapshot.child("longitude").getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -92,38 +131,54 @@ public class Home extends AppCompatActivity
     {
         super.onStart();
 
-        FirebaseRecyclerOptions<Products> options =
-                new FirebaseRecyclerOptions.Builder<Products>()
-                .setQuery(ProductsRef, Products.class)
+        FirebaseRecyclerOptions<Mitra> options =
+                new FirebaseRecyclerOptions.Builder<Mitra>()
+                .setQuery(MitraRef, Mitra.class)
                 .build();
 
 
-        FirebaseRecyclerAdapter<Products, ProductViewHolder> adapter =
-                new FirebaseRecyclerAdapter<Products, ProductViewHolder>(options) {
+        FirebaseRecyclerAdapter<Mitra, MitraViewHolder> adapter =
+                new FirebaseRecyclerAdapter<Mitra, MitraViewHolder>(options) {
                     @Override
-                    protected void onBindViewHolder(@NonNull ProductViewHolder holder, int posisition, @NonNull Products model)
-                    {
-                        holder.txtProductName.setText(model.getPname());
-                        holder.txtProductDescription.setText(model.getDescription());
-                        holder.txtProductPrice.setText("Harga = " +  "Rp." + model.getPrice() );
-                        Picasso.get().load(model.getImage()).into(holder.imageView);
+                    protected void onBindViewHolder(@NonNull MitraViewHolder holder, int posisition, @NonNull Mitra mitra) {
+                        holder.txtNamaMitra.setText(mitra.getUsaha());
+                        holder.txtJam.setText(mitra.getJam());
+                        holder.txtAlamat.setText(mitra.getAlamat());
 
+                        if(mitra.getLatitude()!=null && mitra.getLongitude()!=null ) {
+                            locationA.setLatitude(latitude);
+                            locationA.setLongitude(longitude);
+
+                            locationB.setLatitude(Double.parseDouble(mitra.getLatitude()));
+                            locationB.setLongitude(Double.parseDouble(mitra.getLongitude()));
+
+                            toKM=locationA.distanceTo(locationB)/1000;
+                            jarak =  new DecimalFormat("##.##").format(toKM);
+                            holder.txtJarak.setText("Jarak : "+jarak+ " KM");
+                        }
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view)
                             {
-                                Intent intent = new Intent(Home.this, ProductDetailActivity.class);
-                                intent.putExtra("pid", model.getPid());
-                                startActivity(intent);
+                                Intent intent = new Intent(Home.this, PenjahitDetail.class);
+                                idMitra = mitra.getUserId();
+                                intent.putExtra("UserId", mitra.getUserId());
+                                if(toKM< 3.0) {
+                                    startActivity(intent);
+                                }else{
+                                    Toast.makeText(Home.this, "Area diluar jangkauan",Toast.LENGTH_SHORT).show();
+                                }
                             }
                         });
                     }
 
+
+
                     @NonNull
                     @Override
-                    public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_item_layout, parent, false);
-                        ProductViewHolder holder = new ProductViewHolder(view);
+                    public MitraViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_penjahit_layout, parent, false);
+                        MitraViewHolder holder = new MitraViewHolder(view);
                         return holder;
                     }
                 };
@@ -173,7 +228,15 @@ public class Home extends AppCompatActivity
         if (id == R.id.nav_home) {
             Intent intent = new Intent(Home.this, Home.class);
             startActivity(intent);
-        } else if (id == R.id.nav_profile) {
+        }
+        else if (id== R.id.nav_cart){
+            Intent intent = new Intent(Home.this, CartActivity.class);
+            startActivity(intent);
+        }
+        else if (id== R.id.nav_pemesanan){
+            Intent intent = new Intent(Home.this, ListPemesananPelanggan.class);
+            startActivity(intent);}
+        else if (id == R.id.nav_profile) {
             Intent intent = new Intent(Home.this, Profile.class);
             startActivity(intent);
         } else if (id == R.id.nav_about) {

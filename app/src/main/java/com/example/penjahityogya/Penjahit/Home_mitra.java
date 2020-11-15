@@ -5,14 +5,26 @@ import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
 import com.example.penjahityogya.R;
+import com.example.penjahityogya.ViewHolder.MitraViewHolder;
+import com.example.penjahityogya.ViewHolder.OrderViewHolder;
 import com.example.penjahityogya.activities.Home;
 import com.example.penjahityogya.activities.LoginActivity;
+import com.example.penjahityogya.activities.Pemesanan;
+import com.example.penjahityogya.activities.PenjahitDetail;
 import com.example.penjahityogya.activities.Profile;
+import com.example.penjahityogya.models.Cart;
+import com.example.penjahityogya.models.Mitra;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.view.LayoutInflater;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
@@ -21,21 +33,39 @@ import android.view.MenuItem;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.text.DecimalFormat;
+import java.util.HashMap;
 
 public class Home_mitra extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     FirebaseAuth mAuth;
-    FirebaseUser currentUser ;
+    FirebaseUser currentUser ;private DatabaseReference OrderRef,reference;
+    private RecyclerView recyclerView;
+    RecyclerView.LayoutManager layoutManager;
+    String idPelanggan;
+    private int overTotalPrice = 0;
+    private TextView txtTotalAmount;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +73,14 @@ public class Home_mitra extends AppCompatActivity
         setContentView(R.layout.activity_home_mitra2);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        //ini
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+
+        OrderRef = FirebaseDatabase.getInstance().getReference().child("ambilId").child(currentUser.getUid());
+        txtTotalAmount = (TextView) findViewById(R.id.order_total);
+
+        //ini
+
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -58,7 +92,62 @@ public class Home_mitra extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         updateNavHeader();
+
+        //tampilan daftar orderan
+        recyclerView = findViewById(R.id.recycle_menu_mitra);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
     }
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+
+        FirebaseRecyclerOptions<Cart> options =
+                new FirebaseRecyclerOptions.Builder<Cart>()
+                        .setQuery(OrderRef, Cart.class)
+                        .build();
+
+
+        FirebaseRecyclerAdapter<Cart, OrderViewHolder> adapter =
+                new FirebaseRecyclerAdapter<Cart, OrderViewHolder>(options) {
+                    int oneTypeProductPrice;
+                    @Override
+                    protected void onBindViewHolder(@NonNull OrderViewHolder holder, int posisition, @NonNull Cart cart) {
+                        holder.txtNamaPemesan.setText("Nama Pemesan : "+cart.getNamaUser());
+                        holder.txtQuantity.setText("Quantity : "+cart.getQuantity());
+                        holder.txtTotal.setText("Total Pembayaran : "+cart.getTotal());
+
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view)
+                            {
+                                Intent intent = new Intent(Home_mitra.this, DetailPemesanan.class);
+                                intent.putExtra("idUser",cart.getIdUser());
+                                intent.putExtra("nama",cart.getNamaUser());
+                                intent.putExtra("total",cart.getTotal());
+                                startActivity(intent);
+
+
+                            }
+                        });
+                    }
+
+                    @NonNull
+                    @Override
+                    public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_home_pemesanan, parent, false);
+                        OrderViewHolder holder = new OrderViewHolder(view);
+                        return holder;
+                    }
+                };
+        recyclerView.setAdapter(adapter);
+        adapter.startListening();
+
+    }
+
+
 
     @Override
     public void onBackPressed() {

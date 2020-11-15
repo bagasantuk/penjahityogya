@@ -11,12 +11,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycle_menu"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        >
+        android:layout_width="396dp"
+        android:layout_height="655dp"
+        android:scrollbars="vertical">
 
     </androidx.recyclerview.widget.RecyclerView>
+
 
     <!--<Button-->
         <!--android:id="@+id/map_c"-->

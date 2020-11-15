@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import com.example.penjahityogya.R;
 
-public class HomeActivity extends AppCompatActivity {
+public class VermakActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_vermak);
     }
 }

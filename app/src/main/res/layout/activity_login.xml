@@ -92,17 +92,19 @@
 
     <ImageView
         android:id="@+id/nav_user_photo"
-        android:layout_width="204dp"
-        android:layout_height="231dp"
+        android:layout_width="271dp"
+        android:layout_height="299dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo" />
+        app:layout_constraintVertical_bias="0.461"
+        app:srcCompat="@drawable/logoaplikasi" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline5"

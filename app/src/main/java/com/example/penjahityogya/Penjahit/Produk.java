@@ -20,7 +20,7 @@ import com.example.penjahityogya.R;
 public class Produk extends AppCompatActivity {
 
     ListView listView;
-    String mTitle[]= {"CELANA", "KEMEJA", "BATIK", "BLAZER"};
+    String mTitle[]= {"Buat Baru", "Vermak"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,23 +37,15 @@ public class Produk extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0){
                     Intent intent = new Intent(Produk.this, TambahProdukMitra.class);
-                    intent.putExtra("category", "CELANA");
+                    intent.putExtra("category", "Buat Baru");
                     startActivity(intent);
+                    finish();
                 }
                 if (position == 1){
                     Intent intent = new Intent(Produk.this, TambahProdukMitra.class);
-                    intent.putExtra("category", "KEMEJA");
+                    intent.putExtra("category", "Vermak");
                     startActivity(intent);
-                }
-                if (position == 2){
-                    Intent intent = new Intent(Produk.this, TambahProdukMitra.class);
-                    intent.putExtra("category", "BATIK");
-                    startActivity(intent);
-                }
-                if (position == 3){
-                    Intent intent = new Intent(Produk.this, TambahProdukMitra.class);
-                    intent.putExtra("category", "BLAZER");
-                    startActivity(intent);
+                    finish();
                 }
             }
         });

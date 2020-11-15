@@ -3,7 +3,15 @@ package com.example.penjahityogya;
 public class UserHelperMap
 {
     private String longitude;
-    private String latitude;
+    private String latitude,alamat;
+
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
 
     public String getLatitude() {
         return latitude;

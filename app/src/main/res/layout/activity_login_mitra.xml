@@ -5,10 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Penjahit.LoginMitra">
+
     <ImageView
         android:id="@+id/nav_mitra_photo"
-        android:layout_width="204dp"
-        android:layout_height="231dp"
+        android:layout_width="236dp"
+        android:layout_height="272dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="60dp"
         android:layout_marginEnd="8dp"
@@ -19,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.676"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/logoaplikasi" />
 
     <EditText
         android:id="@+id/logmitraEmail"

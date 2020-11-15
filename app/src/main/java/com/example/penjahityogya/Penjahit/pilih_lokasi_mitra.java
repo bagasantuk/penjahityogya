@@ -1,4 +1,10 @@
-package com.example.penjahityogya.activities;
+package com.example.penjahityogya.Penjahit;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.Intent;
@@ -9,15 +15,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-
 import com.example.penjahityogya.PlacePickerActivity;
 import com.example.penjahityogya.R;
 import com.example.penjahityogya.UserHelperMap;
+import com.example.penjahityogya.activities.Home;
 import com.example.penjahityogya.helpers.Gxon;
 import com.example.penjahityogya.helpers.LocationTrack;
 import com.example.penjahityogya.models.AgendaModel;
@@ -38,9 +39,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import static com.example.penjahityogya.PlacePickerActivity.REQUEST_PLACE_PICKER;
 
-public class Pilih_Lokasi_Pengguna extends AppCompatActivity
-        implements OnMapReadyCallback {
-
+public class pilih_lokasi_mitra extends AppCompatActivity implements OnMapReadyCallback
+{
     TextView tvAlamat;
     NavigationView navigationView;
     Toolbar toolbar;
@@ -68,12 +68,10 @@ public class Pilih_Lokasi_Pengguna extends AppCompatActivity
     private AgendaModel resAlamat = new AgendaModel();
     private Object View;
 
-
-
-    //@Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pilih_lokasi_pengguna);
+        setContentView(R.layout.activity_pilih_lokasi_mitra);
 
         gps = new LocationTrack(this);
         currentLocation = new LatLng(gps.getLatitude(), gps.getLongitude());
@@ -105,13 +103,11 @@ public class Pilih_Lokasi_Pengguna extends AppCompatActivity
 
         /*Tool Bar*/
         setSupportActionBar(toolbar);
-
-
-        btnPickLokasi.setOnClickListener(new View.OnClickListener() {
+        btnPickLokasi.setOnClickListener(new android.view.View.OnClickListener() {
             @Override
             public void onClick(android.view.View v) {
                 Intent i = new Intent();
-                i.setClass(Pilih_Lokasi_Pengguna.this, PlacePickerActivity.class);
+                i.setClass(pilih_lokasi_mitra.this, PlacePickerActivity.class);
                 startActivityForResult(i, REQUEST_PLACE_PICKER);
             }
         });
@@ -131,7 +127,6 @@ public class Pilih_Lokasi_Pengguna extends AppCompatActivity
             }
         });
 
-
         btnselesai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(android.view.View v) {
@@ -143,6 +138,7 @@ public class Pilih_Lokasi_Pengguna extends AppCompatActivity
                     member.setAlamat(tvAlamat.getText().toString());
                     reff.setValue(member);
                 }
+
                 Intent intent = new Intent(getApplicationContext(), Home.class);
 
                 intent.putExtra("latitude",resAlamat.getLatitude());
@@ -163,68 +159,68 @@ public class Pilih_Lokasi_Pengguna extends AppCompatActivity
 
             }
         });
+
     }
 
 
-        private void tampilData ( boolean valEdit){
-            tvAlamat.setText(detailAgenda.getAlamat());
-            resAlamat.setLatitude(detailAgenda.getLatitude());
-            resAlamat.setLongitude(detailAgenda.getLongitude());
-            addMarker(detailAgenda);
+    private void tampilData(boolean valEdit)
+    {
+        tvAlamat.setText(detailAgenda.getAlamat());
+        resAlamat.setLatitude(detailAgenda.getLatitude());
+        resAlamat.setLongitude(detailAgenda.getLongitude());
+        addMarker(detailAgenda);
 
-            tvAlamat.setEnabled(valEdit);
-            //btnPickLokasi.setVisibility(valEdit ? View.VISIBLE:View.GONE);
-            this.valEdit = valEdit;
+        tvAlamat.setEnabled(valEdit);
+        //btnPickLokasi.setVisibility(valEdit ? View.VISIBLE:View.GONE);
+        this.valEdit = valEdit;
+    }
+    private double distance(double lat1, double lon1, double lat2, double lon2) {
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1))
+                * Math.sin(deg2rad(lat2))
+                + Math.cos(deg2rad(lat1))
+                * Math.cos(deg2rad(lat2))
+                * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+        return (dist);
+    }
+    private double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    private double rad2deg(double rad) {
+        return (rad * 180.0 / Math.PI);
+    }
+
+    private void addMarker (AgendaModel data){
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(new LatLng(Double.parseDouble(data.getLatitude()), Double.parseDouble(data.getLongitude())));
+        markerOptions.title(data.getAlamat());
+        googleMap.clear();
+        googleMap.addMarker(markerOptions);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(data.getLatitude()), Double.parseDouble(data.getLongitude())), 12));
+    }
+
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+        googleMap = map;
+        // For showing a move to my location button
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
         }
-
-        private double distance(double lat1, double lon1, double lat2, double lon2) {
-            double theta = lon1 - lon2;
-            double dist = Math.sin(deg2rad(lat1))
-                    * Math.sin(deg2rad(lat2))
-                    + Math.cos(deg2rad(lat1))
-                    * Math.cos(deg2rad(lat2))
-                    * Math.cos(deg2rad(theta));
-            dist = Math.acos(dist);
-            dist = rad2deg(dist);
-            dist = dist * 60 * 1.1515;
-            return (dist);
-        }
-
-        private double deg2rad(double deg) {
-            return (deg * Math.PI / 180.0);
-        }
-
-        private double rad2deg(double rad) {
-            return (rad * 180.0 / Math.PI);
-        }
-
-        private void addMarker (AgendaModel data){
-            MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(new LatLng(Double.parseDouble(data.getLatitude()), Double.parseDouble(data.getLongitude())));
-            markerOptions.title(data.getAlamat());
-            googleMap.clear();
-            googleMap.addMarker(markerOptions);
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(data.getLatitude()), Double.parseDouble(data.getLongitude())), 12));
-        }
-
-        @Override
-        public void onMapReady (GoogleMap map){
-            googleMap = map;
-            // For showing a move to my location button
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-            googleMap.getUiSettings().setZoomControlsEnabled(true);
-            googleMap.setMyLocationEnabled(true);
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 14));
-            if (detailAgenda != null) addMarker(detailAgenda);
-
-        }
-        public void onActivityResult ( int requestCode, int resultCode, Intent data){
-            super.onActivityResult(requestCode, resultCode, data);
-            if (requestCode == REQUEST_PLACE_PICKER && resultCode == RESULT_OK) {
-                resAlamat = Gxon.from(data.getStringExtra("resAlamat"), AgendaModel.class);
-                tvAlamat.setText(resAlamat.getAlamat());
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
+        googleMap.setMyLocationEnabled(true);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 14));
+        if (detailAgenda != null) addMarker(detailAgenda);
+    }
+    public void onActivityResult ( int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_PLACE_PICKER && resultCode == RESULT_OK) {
+            resAlamat = Gxon.from(data.getStringExtra("resAlamat"), AgendaModel.class);
+            tvAlamat.setText(resAlamat.getAlamat());
 //                Location locationA = new Location("Location A");
 //
 //                locationA.setLatitude(-7.792789540441245);
@@ -239,8 +235,7 @@ public class Pilih_Lokasi_Pengguna extends AppCompatActivity
 //
 //                tvAlamat.setText("Distance : " + new DecimalFormat("##.##").format(locationA.distanceTo(locationB)) + "m");
 
-                addMarker(resAlamat);
-            }
+            addMarker(resAlamat);
         }
     }
-
+}

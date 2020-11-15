@@ -5,16 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".Penjahit.Home_mitra"
-    tools:showIn="@layout/app_bar_home_mitra">
+    tools:context=".activities.ListPemesananPelanggan">
+
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycle_menu_mitra"
+        android:id="@+id/recycle_menu_list_pemesanan"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical">
-
-    </androidx.recyclerview.widget.RecyclerView>
-
+        android:scrollbars="vertical"/>
 </RelativeLayout>

@@ -15,6 +15,7 @@ public class UserHelperClass {
         this.password = password;
     }
 
+
     public String getUserId() {
         return userId;
     }
