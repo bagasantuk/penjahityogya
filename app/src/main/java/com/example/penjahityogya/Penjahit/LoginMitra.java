@@ -14,22 +14,59 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.penjahityogya.R;
 import com.example.penjahityogya.activities.PenjahitActivity;
+import com.example.penjahityogya.activities.SessionManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.HashMap;
 
 public class LoginMitra extends AppCompatActivity {
     private EditText edtEmail, edtPassword;
     private Button btnMitraLogin;
     private TextView btnMItraRegister;
-    private FirebaseAuth auth;
+    private FirebaseAuth auth, mAuth;
+    FirebaseUser currentUser;
+    String _email;
+    SessionManager sessionManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_mitra);
+        sessionManager = new SessionManager(LoginMitra.this, SessionManager.SESSION_JASA); //deklarasi sessionManager NB: SESSION_USER sesi untuk user, SESSION_JASA sesi untuk jasa
+
         initView();
+        FirebaseConnect();
         login();
+    }
+    private void FirebaseConnect() {
+//        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+//        firebaseAuth = FirebaseAuth.getInstance();
+//        progressDialog = new ProgressDialog(this);
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        HashMap<String, String> jasaLogin = sessionManager.getJasaLoginFromSession(); //deklarasi HashMap ambil data dari sessionManager
+        _email = jasaLogin.get(SessionManager.KEY_EMAIL); // contoh ambil data dari HashMap
+        if (currentUser != null && _email != null) {
+//            startService(notifService);
+            startActivity(new Intent(LoginMitra.this, Home_mitra.class));
+            finish();
+        }
+
+//        authStateListener = new FirebaseAuth.AuthStateListener() {
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                if (firebaseAuth.getCurrentUser() != null) {
+//                    startService(notifService);
+//                    startActivity(new Intent(LoginActivity.this, Home.class));
+//                    finish();
+//                }
+//
+//            }
+//        }
     }
 
     private void login() {
@@ -77,17 +114,19 @@ public class LoginMitra extends AppCompatActivity {
                                         Bundle bundle = new Bundle();
                                         bundle.putString("email", emailUser);
                                         bundle.putString("pass", passwordUser);
-                                        if (!emailUser.equals("admin@gmail.com")&&!passwordUser.equals("admin123")){
+                                        sessionManager.createLoginJasaSession(passwordUser, emailUser); //contoh save data ke sessionManager
+
+//                                        if (!emailUser.equals("admin@gmail.com")&&!passwordUser.equals("admin123")){
                                             startActivity(new Intent(LoginMitra.this, Home_mitra.class)
                                                     .putExtra("emailpass", bundle));
                                             finish();
-                                        }else{
-                                            startActivity(new Intent(LoginMitra.this, PenjahitActivity.class)
-                                                    .putExtra("emailpass", bundle));
-                                            finish();
-
-
-                                        }
+//                                        }else{
+//                                            startActivity(new Intent(LoginMitra.this, PenjahitActivity.class)
+//                                                    .putExtra("emailpass", bundle));
+//                                            finish();
+//
+//
+//                                        }
 
                                     }
                                 }

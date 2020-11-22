@@ -53,6 +53,7 @@ public class Home extends AppCompatActivity
     RecyclerView.LayoutManager layoutManager;
     String idMitra,jarak;
     double toKM, latitude,longitude;
+    SessionManager sessionManager;
     Location locationA = new Location("Location A");
     Location locationB = new Location("Location B");
 
@@ -61,6 +62,7 @@ public class Home extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home2);
+        sessionManager = new SessionManager(Home.this, SessionManager.SESSION_USER);
 
         //untuk database produk
         MitraRef = FirebaseDatabase.getInstance().getReference().child("mitra");
@@ -231,19 +233,23 @@ public class Home extends AppCompatActivity
         }
         else if (id== R.id.nav_cart){
             Intent intent = new Intent(Home.this, CartActivity.class);
+            intent.putExtra("idMitra",idMitra);
             startActivity(intent);
         }
         else if (id== R.id.nav_pemesanan){
-            Intent intent = new Intent(Home.this, ListPemesananPelanggan.class);
+            Intent intent = new Intent(Home.this, statuspemesananisimitra.class);
             startActivity(intent);}
         else if (id == R.id.nav_profile) {
             Intent intent = new Intent(Home.this, Profile.class);
             startActivity(intent);
         } else if (id == R.id.nav_about) {
+            Intent intent = new Intent(Home.this, Riwayat.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_logout) {
 
             FirebaseAuth.getInstance().signOut();
+            sessionManager.logoutUserFromSession();
             Intent loginActivity = new Intent(getApplicationContext(),LoginActivity.class);
             startActivity(loginActivity);
             finish();

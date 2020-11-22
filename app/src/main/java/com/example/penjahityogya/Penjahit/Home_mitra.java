@@ -12,6 +12,7 @@ import com.example.penjahityogya.activities.LoginActivity;
 import com.example.penjahityogya.activities.Pemesanan;
 import com.example.penjahityogya.activities.PenjahitDetail;
 import com.example.penjahityogya.activities.Profile;
+import com.example.penjahityogya.activities.SessionManager;
 import com.example.penjahityogya.models.Cart;
 import com.example.penjahityogya.models.Mitra;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -65,6 +66,7 @@ public class Home_mitra extends AppCompatActivity
     String idPelanggan;
     private int overTotalPrice = 0;
     private TextView txtTotalAmount;
+    SessionManager sessionManager;
 
 
     @Override
@@ -75,6 +77,8 @@ public class Home_mitra extends AppCompatActivity
         setSupportActionBar(toolbar);
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+
+        sessionManager = new SessionManager(Home_mitra.this, SessionManager.SESSION_JASA);
 
         OrderRef = FirebaseDatabase.getInstance().getReference().child("ambilId").child(currentUser.getUid());
         txtTotalAmount = (TextView) findViewById(R.id.order_total);
@@ -200,6 +204,7 @@ public class Home_mitra extends AppCompatActivity
 
         } else if (id == R.id.nav_mitralogout) {
             FirebaseAuth.getInstance().signOut();
+            sessionManager.logoutJasaFromSession();
             Intent loginActivity = new Intent(getApplicationContext(), LoginMitra.class);
             startActivity(loginActivity);
             finish();

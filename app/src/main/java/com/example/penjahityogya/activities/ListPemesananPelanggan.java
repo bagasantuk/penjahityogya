@@ -23,12 +23,16 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class ListPemesananPelanggan extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
+import java.util.HashMap;
+
+public class ListPemesananPelanggan extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     FirebaseAuth mAuth;
-    FirebaseUser currentUser ;
-    private DatabaseReference OrderRef,reference;
+    FirebaseUser currentUser;
+    private DatabaseReference OrderRef, reference;
     private RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
+    String idMitra;
+    SessionManager sessionManager;
 
 
     @Override
@@ -38,7 +42,16 @@ public class ListPemesananPelanggan extends AppCompatActivity  implements Naviga
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
 
-        OrderRef = FirebaseDatabase.getInstance().getReference().child("Orderan").child("User View").child(currentUser.getUid());
+        Intent in = getIntent();
+        idMitra = in.getStringExtra("idMitra");
+        sessionManager = new SessionManager(ListPemesananPelanggan.this, SessionManager.SESSION_USER);
+        HashMap<String, String> usersDetails = sessionManager.getidMitraFromSession(); //deklarasi HashMap ambil data dari sessionManager
+
+        idMitra = usersDetails.get(SessionManager.KEY_IDMITRA); // contoh ambil data dari HashMap
+//
+//    sessionManager.logoutUserFromSession(); //Hapus data yang ada di sessionManager (untuk Logout)
+
+        OrderRef = FirebaseDatabase.getInstance().getReference().child("Orderan").child("User View").child(currentUser.getUid()).child(idMitra);
 
         //tampilan daftar orderan
         recyclerView = findViewById(R.id.recycle_menu_list_pemesanan);
@@ -48,8 +61,7 @@ public class ListPemesananPelanggan extends AppCompatActivity  implements Naviga
     }
 
     @Override
-    protected void onStart()
-    {
+    protected void onStart() {
         super.onStart();
 
         FirebaseRecyclerOptions<Cart> options =
@@ -62,21 +74,21 @@ public class ListPemesananPelanggan extends AppCompatActivity  implements Naviga
                 new FirebaseRecyclerAdapter<Cart, StatusViewHolder>(options) {
                     @Override
                     protected void onBindViewHolder(@NonNull StatusViewHolder holder, int posisition, @NonNull Cart cart) {
-                    holder.txtBarang.setText("Nama Barang : "+ cart.getPname());//
-                    holder.txtTotal.setText("Total : "+ cart.getTotal());
-                    holder.txtStatus.setText("Status : "+ cart.getStatus());
+                        holder.txtBarang.setText("Nama Barang : " + cart.getPname());//
+                        holder.txtTotal.setText("Total : " + cart.getTotal());
+                        holder.txtStatus.setText("Status : " + cart.getStatus());
 
-                    holder.itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view)
-                        {
-                            Intent intent = new Intent(ListPemesananPelanggan.this, StatusPemesanan.class);
-                            intent.putExtra("status",cart.getStatus());
-                            intent.putExtra("pid",cart.getPid());
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(ListPemesananPelanggan.this, StatusPemesanan.class);
+                                intent.putExtra("status", cart.getStatus());
+                                intent.putExtra("pid", cart.getPid());
+                                intent.putExtra("idMitra", idMitra);
 //                            intent.putExtra("total",cart.getTotal());
-                            startActivity(intent);
-                        }
-                    });
+                                startActivity(intent);
+                            }
+                        });
                     }
 
                     int oneTypeProductPrice;

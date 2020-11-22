@@ -2,7 +2,7 @@ package com.example.penjahityogya.models;
 
 public class Cart
 {
-    private String pid, pname, price, quantity,mitraId,category, date, time,hargabahan,namaUser,totOrder,total,idUser,status;
+    private String pid, pname, price, quantity,mitraId,category, date, time,hargabahan,namaUser,totOrder,total,idUser,status, mitra, nama;
 
     public Cart()
     {
@@ -14,7 +14,7 @@ public class Cart
         this.pid = pid;
     }
 
-    public Cart(String pid, String pname, String price, String quantity, String category, String status)
+    public Cart(String pid, String pname, String price, String quantity, String category, String status, String mitra)
     {
         this.pid = pid;
         this.pname = pname;
@@ -22,6 +22,14 @@ public class Cart
         this.quantity = quantity;
         this.category = category;
         this.status = status;
+    }
+
+    public String getNama() {
+        return nama;
+    }
+
+    public void setNama(String nama) {
+        this.nama = nama;
     }
 
     public String getHargabahan() {
@@ -134,5 +142,13 @@ public class Cart
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getMitra() {
+        return mitra;
+    }
+
+    public void setMitra(String mitra) {
+        this.mitra = mitra;
     }
 }

@@ -7,6 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".activities.StatusPemesanan">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
     <TextView
         android:id="@+id/tvAlamat"
         android:layout_width="match_parent"
@@ -113,7 +121,8 @@
         android:background="@color/colorPrimary"
         android:text="Batal"
         android:textColor="@android:color/white" />
-
+        </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>
 

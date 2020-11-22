@@ -49,8 +49,9 @@ public class ProductDetailActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private RadioGroup bahan;
+    private SessionManager sessionManager;
 
-    String noTelp, pbahan,hargabahan;
+    String noTelp, pbahan, hargabahan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         idMitra = getIntent().getStringExtra("idMitra");
         category = getIntent().getStringExtra("category");
 
+        sessionManager = new SessionManager(ProductDetailActivity.this, SessionManager.SESSION_USER); //deklarasi sessionManager NB: SESSION_USER sesi untuk user, SESSION_JASA sesi untuk jasa
 
         addToCartButton = (Button) findViewById(R.id.pd_add_to_cart_button);
         numberButton = (ElegantNumberButton) findViewById(R.id.number_btn);
@@ -91,6 +93,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+        cekOrder();
 
         addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +101,6 @@ public class ProductDetailActivity extends AppCompatActivity {
                 addingToCartList();
             }
         });
-
     }
 
     private void addingToCartList() {
@@ -111,11 +113,12 @@ public class ProductDetailActivity extends AppCompatActivity {
         SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss a");
         saveCurrentTime = currentTime.format(calForDate.getTime());
 
-        if (pbahan.equals("BahanPenjahit")){
+        if (pbahan.equals("BahanPenjahit")) {
             hargabahan = "50000";
-        } else{
+        } else {
             hargabahan = "0";
         }
+        sessionManager.createidMitraSession(idMitra);
 
         final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Cart List");
 
@@ -132,7 +135,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         //cartListRef.child("User View").child(Prevalent.currentOnlineUser.getPhoneNo())
         cartListRef.child("User View").child(currentUser.getUid())
-                .child("Products").child(productID)
+                .child("Products").child(idMitra).child(productID)
                 .updateChildren(cartMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -149,6 +152,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                                                 Toast.makeText(ProductDetailActivity.this, "Add to Cart List.", Toast.LENGTH_SHORT).show();
 
                                                 Intent intent = new Intent(ProductDetailActivity.this, Home.class);
+                                                intent.putExtra("idMitra", idMitra);
                                                 startActivity(intent);
                                                 finish();
                                             }
@@ -176,6 +180,26 @@ public class ProductDetailActivity extends AppCompatActivity {
                     productPrice.setText(products.getPrice());
                     Picasso.get().load(products.getImage()).into(productImage);
 
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void cekOrder(){
+        final DatabaseReference order = FirebaseDatabase.getInstance().getReference().child("Cart List");
+        order.child("User View").child(currentUser.getUid())
+                .child("Products").child(idMitra);
+        order.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+//                    if(dataSnapshot.child("category").getValue()!=null)
+                        addToCartButton.setVisibility(View.INVISIBLE);
                 }
             }
 

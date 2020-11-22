@@ -10,8 +10,8 @@
             android:title="@string/menu_home" />
         <item
             android:id="@+id/nav_cart"
-            android:icon="@drawable/ic_shopping_cart_black_24dp"
-            android:title="Cart" />
+            android:icon="@drawable/ic_work_black_24dp"
+            android:title="Order" />
         <item
             android:id="@+id/nav_pemesanan"
             android:icon="@drawable/ic_shopping_basket_black_24dp"
@@ -22,8 +22,8 @@
             android:title="Profile" />
         <item
             android:id="@+id/nav_about"
-            android:icon="@drawable/ic_info_outline_black_24dp"
-            android:title="About" />
+            android:icon="@drawable/ic_list_black_24dp"
+            android:title="Riwayat" />
         <item
         android:id="@+id/nav_logout"
         android:icon="@drawable/ic_exit_to_app_black_24dp"

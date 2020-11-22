@@ -19,11 +19,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.StatusPemesanan"></activity>
-        <activity android:name=".Penjahit.DetailPemesanan">
-
-        </activity>
-
+        <activity android:name=".activities.Riwayat"></activity>
+        <activity android:name=".activities.statuspemesananisimitra" />
+        <activity android:name=".activities.StatusPemesanan" />
+        <activity android:name=".Penjahit.DetailPemesanan" />
         <activity android:name=".activities.ListPemesananPelanggan" />
         <activity android:name=".Penjahit.pilih_lokasi_mitra" />
         <activity android:name=".activities.Pemesanan" />
@@ -79,10 +78,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity >
-        <activity android:name=".activities.SplashScreen">
-
         </activity>
+        <activity android:name=".activities.SplashScreen" />
         <activity android:name=".activities.Pilih_Lokasi_Pengguna" />
         <activity android:name=".PlacePickerActivity" />
     </application>

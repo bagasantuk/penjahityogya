@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="10dp"
+    app:cardElevation="15dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/riwayat_barang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nama Barang"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/riwayat_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Category"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_below="@id/riwayat_barang"/>
+        <TextView
+            android:id="@+id/riwayat_tanggal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tanggal"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_below="@id/riwayat_category"/>
+        <TextView
+            android:id="@+id/riwayat_quantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Jumlah"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_below="@+id/riwayat_tanggal"/>
+        <TextView
+            android:id="@+id/riwayat_total"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_below="@id/riwayat_quantity"/>
+        <TextView
+            android:id="@+id/riwayat_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Status"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_below="@id/riwayat_total"/>
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

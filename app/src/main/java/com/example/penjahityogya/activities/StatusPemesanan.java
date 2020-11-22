@@ -15,10 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.example.penjahityogya.Penjahit.DetailPemesanan;
 import com.example.penjahityogya.R;
 import com.example.penjahityogya.UserHelperPesan;
+import com.example.penjahityogya.UserHelperRiwayat;
 import com.example.penjahityogya.ViewHolder.CartViewHolder;
 import com.example.penjahityogya.ViewHolder.StatusViewHolder;
 import com.example.penjahityogya.helpers.LocationTrack;
@@ -32,6 +35,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -39,6 +44,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
 
 public class StatusPemesanan extends AppCompatActivity implements OnMapReadyCallback {
     String idUser;
@@ -56,6 +65,7 @@ public class StatusPemesanan extends AppCompatActivity implements OnMapReadyCall
     private TextView txtTotalAmount;
     private int overTotalPrice = 0, max, overTotalQuantity = 0;
     Button batal;
+    SessionManager sessionManager;
 
     String _alamat;
     String _nama;
@@ -71,7 +81,7 @@ public class StatusPemesanan extends AppCompatActivity implements OnMapReadyCall
 
     private ElegantNumberButton numberButton;
     private TextView productPrice, productDescriptuon, productName;
-    private String productID, productID2, idMitra, category = "", date, time, productNameS, productPriceS, quantity, hargabahan;
+    private String productID, productID2, idMitra, category = "", date, time, productPriceS, quantity, hargabahan, pname,status_;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,8 +114,17 @@ public class StatusPemesanan extends AppCompatActivity implements OnMapReadyCall
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
 
+        idUser=currentUser.getUid();
+
         Intent intent = getIntent();
         _alamat = intent.getStringExtra("alamat");
+        idMitra = intent.getStringExtra("idMitra");
+        sessionManager = new SessionManager(StatusPemesanan.this, SessionManager.SESSION_USER);
+        HashMap<String, String> usersDetails = sessionManager.getidMitraFromSession(); //deklarasi HashMap ambil data dari sessionManager
+
+        idMitra = usersDetails.get(SessionManager.KEY_IDMITRA);
+
+
 
         reference = FirebaseDatabase.getInstance().getReference().child("users").child(currentUser.getUid());
         reference.addValueEventListener(new ValueEventListener() {
@@ -132,7 +151,7 @@ public class StatusPemesanan extends AppCompatActivity implements OnMapReadyCall
         _longitude = intent.getStringExtra("longitude");
 
         productID = getIntent().getStringExtra("pid");
-        idMitra = getIntent().getStringExtra("idMitra");
+
         category = getIntent().getStringExtra("category");
 
         numberButton = (ElegantNumberButton) findViewById(R.id.number_btn);
@@ -141,7 +160,7 @@ public class StatusPemesanan extends AppCompatActivity implements OnMapReadyCall
         productPrice = (TextView) findViewById(R.id.product_price_detail);
         batal = (Button) findViewById(R.id.btnbatal);
 //        if (productID != null) {
-            reff2 = FirebaseDatabase.getInstance().getReference().child("Orderan").child("User View").child(currentUser.getUid()).child(productID);
+            reff2 = FirebaseDatabase.getInstance().getReference().child("Orderan").child("User View").child(currentUser.getUid()).child(idMitra).child(productID);
             reff2.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -164,6 +183,18 @@ public class StatusPemesanan extends AppCompatActivity implements OnMapReadyCall
                         }else if (Status.equals("selesai")) {
                             batal.setVisibility(View.INVISIBLE);
                             Status ="Pesanan Telah Selesai";
+//                            toRiwayat(productID);
+
+//                            DatabaseReference hapus = FirebaseDatabase.getInstance().getReference().child("Cart List");
+//                            hapus.child("User View").child(currentUser.getUid()).child("Products").child(idMitra).removeValue();
+//                            hapus.child("Temp").child(idUser).child(idMitra).removeValue();
+//                            hapus.child("Mitra View").child(idMitra).child(currentUser.getUid()).removeValue();
+//                            DatabaseReference hapus1 = FirebaseDatabase.getInstance().getReference();
+//                            hapus1.child("ambilId").child(idMitra).child(currentUser.getUid()).removeValue();
+//                            hapus1.child("tglOrder").child(idMitra).child(currentUser.getUid()).removeValue();
+                            Intent to = new Intent(StatusPemesanan.this,Riwayat.class);
+                            startActivity(to);
+                            finish();
                         } else
                             batal.setVisibility(View.VISIBLE);
                         status.setText(Status);
@@ -185,8 +216,10 @@ public class StatusPemesanan extends AppCompatActivity implements OnMapReadyCall
             @Override
             public void onClick(View v) {
                 DatabaseReference hapus = FirebaseDatabase.getInstance().getReference().child("Orderan");
-                hapus.child("User View").child(currentUser.getUid()).child(productID).removeValue();
+                hapus.child("User View").child(currentUser.getUid()).child(idMitra).child(productID).removeValue();
                 hapus.child("Mitra View").child(idMitra).child(currentUser.getUid()).child(productID).removeValue();
+                DatabaseReference hapus2 = FirebaseDatabase.getInstance().getReference();
+                hapus2.child("ambilId").child(idMitra).child(currentUser.getUid()).removeValue();
                 Intent intent = new Intent(StatusPemesanan.this, Home.class);
                 startActivity(intent);
                 finish();
@@ -244,6 +277,7 @@ public class StatusPemesanan extends AppCompatActivity implements OnMapReadyCall
                 new FirebaseRecyclerOptions.Builder<Cart>()
                         .setQuery(cartListRef.child("User View")
                                 .child(currentUser.getUid())
+                                 .child(idMitra)
                                 , Cart.class)
                         .build();
 //         FirebaseRecyclerOptions<Cart> options =
@@ -295,4 +329,67 @@ public class StatusPemesanan extends AppCompatActivity implements OnMapReadyCall
         adapter.startListening();
 
     }
+
+//    private void toRiwayat(String pid) {
+//        reff2 = FirebaseDatabase.getInstance().getReference()
+//                .child("Orderan")
+//                .child("Mitra View")
+//                .child(idMitra)
+//                .child(currentUser.getUid())
+//                .child(pid);
+//        reff2.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.child("category").getValue() != null
+//                        && dataSnapshot.child("date").getValue() != null
+//                        //&& dataSnapshot.child("hargabahan").getValue() != null
+//                        && dataSnapshot.child("pname").getValue() != null
+//                        //&& dataSnapshot.child("time").getValue() != null
+//                        //&& dataSnapshot.child("price").getValue() != null
+//                        && dataSnapshot.child("quantity").getValue() != null
+//                        && dataSnapshot.child("total").getValue() != null
+//                        && dataSnapshot.child("status").getValue() != null
+//                ) {
+//                    category = dataSnapshot.child("category").getValue().toString();
+//                    date = dataSnapshot.child("date").getValue().toString();
+//                    //hargabahan = dataSnapshot.child("hargabahan").getValue().toString();
+//                    pname = dataSnapshot.child("pname").getValue().toString();
+//                    //time = dataSnapshot.child("time").getValue().toString();
+//                    //status = dataSnapshot.child("status").getValue().toString();
+//                    //productPriceS = dataSnapshot.child("price").getValue().toString();
+//                    quantity = dataSnapshot.child("quantity").getValue().toString();
+//                    status_ = dataSnapshot.child("status").getValue().toString();
+//                    String total = dataSnapshot.child("total").getValue().toString();
+//                    txtTotalAmount.setText("Total = Rp. " + (dataSnapshot.child("total").getValue().toString()));
+//
+//                    String saveCurrentTime, saveCurrentDate;
+//
+//                    Calendar calForDate = Calendar.getInstance();
+//                    SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
+//                    saveCurrentDate = currentDate.format(calForDate.getTime());
+//                    UserHelperRiwayat riwayat =new UserHelperRiwayat(category,date,pname,quantity,status_,total);
+//                    DatabaseReference add = FirebaseDatabase.getInstance().getReference().child("Riwayat").child(currentUser.getUid()).child(saveCurrentDate+","+idMitra);
+//                    add.setValue(riwayat);
+//
+//                    DatabaseReference hapus = FirebaseDatabase.getInstance().getReference().child("Orderan");
+//                    hapus.child("User View").child(currentUser.getUid()).child("Products").child(idMitra).removeValue();
+//                    hapus.child("Temp").child(idUser).child(idMitra).removeValue();
+//                    hapus.child("Mitra View").child(idMitra).child(currentUser.getUid()).removeValue();
+//                    DatabaseReference hapus1 = FirebaseDatabase.getInstance().getReference();
+//                    hapus1.child("ambilId").child(idMitra).child(currentUser.getUid()).removeValue();
+//                    hapus1.child("tglOrder").child(idMitra).child(currentUser.getUid()).removeValue();
+//
+//                    Intent to = new Intent(StatusPemesanan.this,Riwayat.class);
+//                    startActivity(to);
+//                    finish();
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 }

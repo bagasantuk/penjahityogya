@@ -59,9 +59,9 @@ public class Pemesanan extends AppCompatActivity implements OnMapReadyCallback {
     RecyclerView.LayoutManager layoutManager;
     private RecyclerView recyclerView;
     private TextView txtTotalAmount;
-    private int overTotalPrice = 0, max, overTotalQuantity=0;
+    private int overTotalPrice = 0, max, overTotalQuantity = 0;
 
-    String _alamat, _nama, _telp, _latitude, _longitude;
+    String _alamat, _nama, _telp, _latitude, _longitude,namaMitra;
     TextView alamat, nama, telp;
 
     FirebaseDatabase database;
@@ -138,7 +138,7 @@ public class Pemesanan extends AppCompatActivity implements OnMapReadyCallback {
                     reference.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (true) {
+                            if (true && dataSnapshot.child("pid").getValue()!=null) {
                                 String pid = dataSnapshot.child("pid").getValue().toString();
 
                                 reff2 = FirebaseDatabase.getInstance().getReference()
@@ -146,6 +146,7 @@ public class Pemesanan extends AppCompatActivity implements OnMapReadyCallback {
                                         .child("User View")
                                         .child(currentUser.getUid())
                                         .child("Products")
+                                        .child(idMitra)
                                         .child(pid);
                                 reff2.addValueEventListener(new ValueEventListener() {
                                     @Override
@@ -178,7 +179,7 @@ public class Pemesanan extends AppCompatActivity implements OnMapReadyCallback {
 
                                             //cartListRef.child("User View").child(Prevalent.currentOnlineUser.getPhoneNo())
                                             if (productID != null)
-                                                cartListRef.child("User View").child(currentUser.getUid())
+                                                cartListRef.child("User View").child(currentUser.getUid()).child(idMitra)
                                                         .child(productID)
                                                         .updateChildren(cartMap)
                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -193,7 +194,32 @@ public class Pemesanan extends AppCompatActivity implements OnMapReadyCallback {
                                                                                 @Override
                                                                                 public void onComplete(@NonNull Task<Void> task) {
                                                                                     if (task.isSuccessful()) {
-                                                                                        Toast.makeText(Pemesanan.this, "Add to Cart List." + a, Toast.LENGTH_SHORT).show();
+                                                                                        Toast.makeText(Pemesanan.this, "Add to Status Pemesanan." + a, Toast.LENGTH_SHORT).show();
+//                                                                                        ambilNama(idMitra);
+                                                                                        reference = FirebaseDatabase.getInstance().getReference().child("mitra").child(idMitra);
+                                                                                        reference.addValueEventListener(new ValueEventListener() {
+                                                                                            @Override
+                                                                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                                                                if(dataSnapshot.child("usaha").getValue()!=null ) {
+                                                                                                    namaMitra = dataSnapshot.child("usaha").getValue().toString();
+                                                                                                    DatabaseReference add = FirebaseDatabase.getInstance().getReference().child("Orderan").child("Temp").child(currentUser.getUid()).child(idMitra);
+                                                                                                    Cart c = new Cart();
+                                                                                                    c.setNama(namaMitra);
+                                                                                                    add.setValue(c);
+                                                                                                    c.setMitraId(idMitra);
+                                                                                                    add.setValue(c);
+                                                                                                }
+                                                                                            }
+
+                                                                                            @Override
+                                                                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                                                            }
+                                                                                        });
+
+                                                                                        DatabaseReference hapus = FirebaseDatabase.getInstance().getReference().child("Cart List");
+                                                                                        hapus.child("User View").child(currentUser.getUid()).child("Products").child(idMitra).removeValue();
+                                                                                        hapus.child("Mitra View").child(idMitra).child(currentUser.getUid()).removeValue();
 
                                                                                     }
                                                                                 }
@@ -219,7 +245,8 @@ public class Pemesanan extends AppCompatActivity implements OnMapReadyCallback {
                         }
                     });
                 }
-                Intent intent = new Intent(Pemesanan.this, Home.class);
+                Intent intent = new Intent(Pemesanan.this, ListPemesananPelanggan.class);
+                intent.putExtra("idMitra", idMitra);
                 startActivity(intent);
                 finish();
             }
@@ -233,6 +260,7 @@ public class Pemesanan extends AppCompatActivity implements OnMapReadyCallback {
         nama.setText(_nama);
         telp.setText(_telp);
     }
+
     @Override
     public void onMapReady(GoogleMap map) {
         googleMap = map;
@@ -260,7 +288,7 @@ public class Pemesanan extends AppCompatActivity implements OnMapReadyCallback {
                 new FirebaseRecyclerOptions.Builder<Cart>()
                         .setQuery(cartListRef.child("User View")
                                 .child(currentUser.getUid())
-                                .child("Products"), Cart.class)
+                                .child("Products").child(idMitra), Cart.class)
                         .build();
 //         FirebaseRecyclerOptions<Cart> options =
 //                 new FirebaseRecyclerOptions.Builder<Cart>()
@@ -270,7 +298,7 @@ public class Pemesanan extends AppCompatActivity implements OnMapReadyCallback {
         FirebaseRecyclerAdapter<Cart, CartViewHolder> adapter
                 = new FirebaseRecyclerAdapter<Cart, CartViewHolder>(options) {
             int counter = 0;
-            int oneTypeProductPrice,oneTypeQuantity;
+            int oneTypeProductPrice, oneTypeQuantity;
 
             @Override
             protected void onBindViewHolder(@NonNull CartViewHolder holder, int posisition, @NonNull Cart model) {
@@ -321,4 +349,25 @@ public class Pemesanan extends AppCompatActivity implements OnMapReadyCallback {
         adapter.startListening();
 
     }
+//    void ambilNama(String id){
+//        reference = FirebaseDatabase.getInstance().getReference().child("mitra").child(id);
+//        reference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                if(dataSnapshot.child("usaha").getValue()!=null ) {
+//                    namaMitra = dataSnapshot.child("usaha").getValue().toString();
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//        DatabaseReference add = FirebaseDatabase.getInstance().getReference().child("Orderan").child("Temp").child(currentUser.getUid()).child(idMitra);
+//        Cart c = new Cart();
+//        c.setNama(namaMitra);
+//        add.setValue(c);
+////        showMessage(nama);
+//    }
 }

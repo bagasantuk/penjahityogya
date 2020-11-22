@@ -53,12 +53,12 @@ public class PenjahitDetail extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
 
         updateProfile();
-
-        //tampilan produk
-        recyclerView = findViewById(R.id.recycle_menu);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+//
+//        //tampilan produk
+//        recyclerView = findViewById(R.id.recycle_menu);
+//        recyclerView.setHasFixedSize(true);
+//        layoutManager = new LinearLayoutManager(this);
+//        recyclerView.setLayoutManager(layoutManager);
 
         buat_baru = findViewById(R.id.buatbaru);
         vermak = findViewById(R.id.vermak);
@@ -152,8 +152,8 @@ public class PenjahitDetail extends AppCompatActivity {
                             return holder;
                         }
                     };
-            recyclerView.setAdapter(adapter);
-            adapter.startListening();
+//            recyclerView.setAdapter(adapter);
+//            adapter.startListening();
 
             buat_baru.setOnClickListener(new View.OnClickListener() {
                 @Override
