@@ -1,7 +1,7 @@
 package com.example.penjahityogya.Penjahit;
 
 public class MItraHelperClass {
-    String userId, usaha, email, Telp, password, Alamat, Jam, latitude, longitude;
+    String userId, usaha, email, Telp, password, Alamat, Jam, latitude, longitude, image;
 
     public MItraHelperClass() {
     }
@@ -16,6 +16,20 @@ public class MItraHelperClass {
         this.Jam = Jam;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+
+    public MItraHelperClass(String userId, String usaha, String email, String Telp, String password, String Alamat, String Jam, String longitude, String latitude, String image) {
+        this.userId= userId;
+        this.usaha = usaha;
+        this.email = email;
+        this.Telp = Telp;
+        this.password = password;
+        this.Alamat = Alamat;
+        this.Jam = Jam;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.image = image;
     }
 
     public String getUserId() {

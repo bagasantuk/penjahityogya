@@ -12,7 +12,7 @@ import com.example.penjahityogya.R;
 
 public class MitraViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    public TextView txtNamaMitra, txtJam, txtAlamat, txtJarak;
+    public TextView txtNamaMitra, txtJam, txtAlamat, txtJarak, txtNotelp;
     public ImageView imageView;
     public ItemClickListener listener;
 
@@ -20,8 +20,9 @@ public class MitraViewHolder extends RecyclerView.ViewHolder implements View.OnC
     {
         super(itemView);
 
-        imageView = (ImageView) itemView.findViewById(R.id.detailMitraimageView);
+//        imageView = (ImageView) itemView.findViewById(R.id.detailMitraimageView);
         txtNamaMitra = (TextView) itemView.findViewById(R.id.list_penjahit);
+        txtNotelp = (TextView) itemView.findViewById(R.id.list_notelp);
         txtJam = (TextView) itemView.findViewById(R.id.list_jam);
         txtAlamat = (TextView) itemView.findViewById(R.id.list_alamat);
         txtJarak = (TextView) itemView.findViewById(R.id.list_jarak);

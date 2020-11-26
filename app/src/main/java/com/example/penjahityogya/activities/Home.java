@@ -47,12 +47,12 @@ public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     FirebaseAuth mAuth;
-    FirebaseUser currentUser ;
-    private DatabaseReference MitraRef,reference;
+    FirebaseUser currentUser;
+    private DatabaseReference MitraRef, reference;
     private RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
-    String idMitra,jarak;
-    double toKM, latitude,longitude;
+    String idMitra, jarak;
+    double toKM, latitude, longitude;
     SessionManager sessionManager;
     Location locationA = new Location("Location A");
     Location locationB = new Location("Location B");
@@ -78,20 +78,19 @@ public class Home extends AppCompatActivity
 //            }
 //        });
         // ini
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                Intent intent = new Intent(Home.this, CartActivity.class);
-                intent.putExtra("idMitra",idMitra);
-                startActivity(intent);
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view)
+//            {
+//                Intent intent = new Intent(Home.this, CartActivity.class);
+//                intent.putExtra("idMitra",idMitra);
+//                startActivity(intent);
+//            }
+//        });
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-
 
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -114,7 +113,7 @@ public class Home extends AppCompatActivity
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.child("latitude").getValue()!=null && dataSnapshot.child("longitude").getValue()!=null) {
+                if (dataSnapshot.child("latitude").getValue() != null && dataSnapshot.child("longitude").getValue() != null) {
                     latitude = Double.parseDouble(dataSnapshot.child("latitude").getValue().toString());
                     longitude = Double.parseDouble(dataSnapshot.child("longitude").getValue().toString());
                 }
@@ -129,51 +128,62 @@ public class Home extends AppCompatActivity
     }
 
     @Override
-    protected void onStart()
-    {
+    protected void onStart() {
         super.onStart();
 
         FirebaseRecyclerOptions<Mitra> options =
                 new FirebaseRecyclerOptions.Builder<Mitra>()
-                .setQuery(MitraRef, Mitra.class)
-                .build();
+                        .setQuery(MitraRef, Mitra.class)
+                        .build();
 
 
         FirebaseRecyclerAdapter<Mitra, MitraViewHolder> adapter =
                 new FirebaseRecyclerAdapter<Mitra, MitraViewHolder>(options) {
                     @Override
                     protected void onBindViewHolder(@NonNull MitraViewHolder holder, int posisition, @NonNull Mitra mitra) {
-                        holder.txtNamaMitra.setText(mitra.getUsaha());
-                        holder.txtJam.setText(mitra.getJam());
-                        holder.txtAlamat.setText(mitra.getAlamat());
+                        holder.txtNamaMitra.setText("Nama Penjahit : " +mitra.getUsaha());
+                        holder.txtNotelp.setText("No Telepon : " + mitra.getTelp());
+                        holder.txtJam.setText("Jam Operasional : " + mitra.getJam());
+                        holder.txtAlamat.setText("Alamat : " +mitra.getAlamat());
 
-                        if(mitra.getLatitude()!=null && mitra.getLongitude()!=null ) {
+                        if (mitra.getLatitude() != null && mitra.getLongitude() != null) {
                             locationA.setLatitude(latitude);
                             locationA.setLongitude(longitude);
 
                             locationB.setLatitude(Double.parseDouble(mitra.getLatitude()));
                             locationB.setLongitude(Double.parseDouble(mitra.getLongitude()));
 
-                            toKM=locationA.distanceTo(locationB)/1000;
-                            jarak =  new DecimalFormat("##.##").format(toKM);
-                            holder.txtJarak.setText("Jarak : "+jarak+ " KM");
+                            toKM = locationA.distanceTo(locationB) / 1000;
+                            jarak = new DecimalFormat("##.##").format(toKM);
+                            holder.txtJarak.setText("Jarak : " + jarak + " KM");
                         }
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(View view)
-                            {
+                            public void onClick(View view) {
                                 Intent intent = new Intent(Home.this, PenjahitDetail.class);
-                                idMitra = mitra.getUserId();
-                                intent.putExtra("UserId", mitra.getUserId());
-                                if(toKM< 3.0) {
-                                    startActivity(intent);
-                                }else{
-                                    Toast.makeText(Home.this, "Area diluar jangkauan",Toast.LENGTH_SHORT).show();
+                                if (mitra.getLatitude() != null && mitra.getLongitude() != null) {
+                                    locationA.setLatitude(latitude);
+                                    locationA.setLongitude(longitude);
+
+                                    locationB.setLatitude(Double.parseDouble(mitra.getLatitude()));
+                                    locationB.setLongitude(Double.parseDouble(mitra.getLongitude()));
+
+                                    toKM = locationA.distanceTo(locationB) / 1000;
+                                    jarak = new DecimalFormat("##.##").format(toKM);
+                                    //holder.txtJarak.setText("Jarak : " + jarak + " KM");
+
+
+                                    idMitra = mitra.getUserId();
+                                    intent.putExtra("UserId", mitra.getUserId());
+                                    if (toKM < 3.0) {
+                                        startActivity(intent);
+                                    } else {
+                                        Toast.makeText(Home.this, "Area diluar jangkauan", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                             }
                         });
                     }
-
 
 
                     @NonNull
@@ -184,8 +194,8 @@ public class Home extends AppCompatActivity
                         return holder;
                     }
                 };
-            recyclerView.setAdapter(adapter);
-            adapter.startListening();
+        recyclerView.setAdapter(adapter);
+        adapter.startListening();
 
     }
 
@@ -230,16 +240,17 @@ public class Home extends AppCompatActivity
         if (id == R.id.nav_home) {
             Intent intent = new Intent(Home.this, Home.class);
             startActivity(intent);
-        }
-        else if (id== R.id.nav_cart){
+        } else if (id == R.id.nav_cart) {
             Intent intent = new Intent(Home.this, CartActivity.class);
-            intent.putExtra("idMitra",idMitra);
+            intent.putExtra("idMitra", idMitra);
             startActivity(intent);
-        }
-        else if (id== R.id.nav_pemesanan){
+        } else if (id == R.id.nav_pemesanan) {
             Intent intent = new Intent(Home.this, statuspemesananisimitra.class);
-            startActivity(intent);}
-        else if (id == R.id.nav_profile) {
+            startActivity(intent);
+        } else if (id == R.id.nav_lokasi) {
+            Intent intent = new Intent(Home.this, Pilih_Lokasi_Pengguna.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_profile) {
             Intent intent = new Intent(Home.this, Profile.class);
             startActivity(intent);
         } else if (id == R.id.nav_about) {
@@ -250,7 +261,7 @@ public class Home extends AppCompatActivity
 
             FirebaseAuth.getInstance().signOut();
             sessionManager.logoutUserFromSession();
-            Intent loginActivity = new Intent(getApplicationContext(),LoginActivity.class);
+            Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(loginActivity);
             finish();
 
@@ -261,17 +272,17 @@ public class Home extends AppCompatActivity
         return true;
 
 
-
     }
+
     //TODO: MENAMPILKAN DATA PRODUK PADA HOME
-    public void updateNavHeader(){
+    public void updateNavHeader() {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = headerView.findViewById(R.id.nav_username);
         TextView navUserMail = headerView.findViewById(R.id.nav_mitra_mail);
         ImageView navUserPhoto = headerView.findViewById(R.id.nav_mitra_photo);
 
-        navUserMail.setText (currentUser.getEmail());
+        navUserMail.setText(currentUser.getEmail());
         navUsername.setText(currentUser.getDisplayName());
 
         // now we will use Glide to load user image

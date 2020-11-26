@@ -4,7 +4,7 @@ import com.example.penjahityogya.Penjahit.Produk;
 
 public class Products
 {
-    private String pname, description, price, image, category, pid, date, time;
+    private String pname, description, price, image, category, pid, date, time,usaha;
 
     public Products()
     {
@@ -20,6 +20,14 @@ public class Products
         this.pid = pid;
         this.date = date;
         this.time = time;
+    }
+
+    public String getUsaha() {
+        return usaha;
+    }
+
+    public void setUsaha(String usaha) {
+        this.usaha = usaha;
     }
 
     public String getPname() {

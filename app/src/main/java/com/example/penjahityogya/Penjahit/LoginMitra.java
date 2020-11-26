@@ -27,7 +27,7 @@ public class LoginMitra extends AppCompatActivity {
     private EditText edtEmail, edtPassword;
     private Button btnMitraLogin;
     private TextView btnMItraRegister;
-    private FirebaseAuth auth, mAuth;
+    private FirebaseAuth mAuth;
     FirebaseUser currentUser;
     String _email;
     SessionManager sessionManager;
@@ -101,7 +101,7 @@ public class LoginMitra extends AppCompatActivity {
                 else if (passwordUser.length() < 6) {
                     edtPassword.setError("Password minimal terdiri dari 6 karakter");
                 } else {
-                    auth.signInWithEmailAndPassword(emailUser, passwordUser)
+                    mAuth.signInWithEmailAndPassword(emailUser, passwordUser)
                             .addOnCompleteListener(LoginMitra.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -140,6 +140,6 @@ public class LoginMitra extends AppCompatActivity {
         edtPassword = findViewById(R.id.logmitraPassword);
         btnMitraLogin = findViewById(R.id.logmitraBtn);
         btnMItraRegister = findViewById(R.id.logBtnRegMitra);
-        auth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
     }
 }

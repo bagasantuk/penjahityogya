@@ -87,7 +87,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/total_pemesanan"
                 android:text="*Harap membayar ketika penjahit mengukur atau mengambil bahan"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycle_menu_pemesanan"

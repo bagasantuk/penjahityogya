@@ -72,14 +72,16 @@
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.PenjahitActivity" />
         <activity android:name=".activities.RegistrasiActivity" />
-        <activity android:name=".activities.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".activities.LoginActivity"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
+        <activity android:name=".activities.SplashScreen" >
+    <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+
+        <category android:name="android.intent.category.LAUNCHER" />
+    </intent-filter>
         </activity>
-        <activity android:name=".activities.SplashScreen" />
         <activity android:name=".activities.Pilih_Lokasi_Pengguna" />
         <activity android:name=".PlacePickerActivity" />
     </application>

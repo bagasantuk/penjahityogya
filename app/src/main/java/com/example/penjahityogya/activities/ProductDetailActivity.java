@@ -72,6 +72,13 @@ public class ProductDetailActivity extends AppCompatActivity {
         productPrice = (TextView) findViewById(R.id.product_price_detail);
         bahan = findViewById(R.id.rbg);
 
+        if(category.equals("Vermak")){
+            bahan.setVisibility(View.INVISIBLE);
+            pbahan="BahanUser";
+        }else
+            bahan.setVisibility(View.VISIBLE);
+
+
         bahan.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
             @Override
@@ -151,7 +158,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                                             if (task.isSuccessful()) {
                                                 Toast.makeText(ProductDetailActivity.this, "Add to Cart List.", Toast.LENGTH_SHORT).show();
 
-                                                Intent intent = new Intent(ProductDetailActivity.this, Home.class);
+                                                Intent intent = new Intent(ProductDetailActivity.this, CartActivity.class);
                                                 intent.putExtra("idMitra", idMitra);
                                                 startActivity(intent);
                                                 finish();

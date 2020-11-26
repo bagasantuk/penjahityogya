@@ -17,6 +17,10 @@
             android:icon="@drawable/ic_shopping_basket_black_24dp"
             android:title="Status Pemesanan" />
         <item
+            android:id="@+id/nav_lokasi"
+            android:icon="@drawable/ic_pin_drop_black_24dp"
+            android:title="Lokasi" />
+        <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_person_black_24dp"
             android:title="Profile" />

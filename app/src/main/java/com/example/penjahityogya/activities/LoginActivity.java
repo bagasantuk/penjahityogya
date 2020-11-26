@@ -134,6 +134,7 @@ public class LoginActivity extends AppCompatActivity {
                                         Bundle bundle = new Bundle();
                                         bundle.putString("email", emailUser);
                                         bundle.putString("pass", passwordUser);
+                                        currentUser = mAuth.getCurrentUser();
                                         sessionManager.createLoginSession(passwordUser, emailUser,currentUser.getUid()); //contoh save data ke sessionManager
 
 //                                        if (!emailUser.equals("admin@gmail.com") && !passwordUser.equals("admin123")) {

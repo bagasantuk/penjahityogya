@@ -168,6 +168,7 @@ public class RegistrasiActivity extends AppCompatActivity {
         writeNewuser(user.getUid(), username, user.getEmail(),userTelp.getText().toString(),userPassword.getText().toString());
 
         // Go to MainActivity
+        FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(RegistrasiActivity.this, LoginActivity.class));
         finish();
     }
@@ -222,6 +223,7 @@ public class RegistrasiActivity extends AppCompatActivity {
 
     private void updateUI() {
         Intent homeActivity = new Intent(getApplicationContext(),LoginActivity.class);
+        FirebaseAuth.getInstance().signOut();
         startActivity(homeActivity);
         finish();
     }

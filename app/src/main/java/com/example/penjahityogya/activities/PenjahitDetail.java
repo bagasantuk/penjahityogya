@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.penjahityogya.Penjahit.LoginMitra;
@@ -35,10 +36,10 @@ import com.squareup.picasso.Picasso;
 public class PenjahitDetail extends AppCompatActivity {
 
     FirebaseAuth mAuth;
-    FirebaseUser currentUser ;
+    FirebaseUser currentUser;
     DatabaseReference reference;
     String jam;
-    String alamat,idMitra,namaMitra;
+    String alamat, idMitra, namaMitra;
     ImageView photo;
     Button buat_baru, vermak;
     private DatabaseReference ProductsRef;
@@ -64,16 +65,14 @@ public class PenjahitDetail extends AppCompatActivity {
         vermak = findViewById(R.id.vermak);
 
 
-
     }
 
 
-    private void updateProfile()
-    {
+    private void updateProfile() {
         TextView profilnama = findViewById(R.id.detailMitraNama);
         TextView Jam = findViewById(R.id.detailMitraJam);
         final TextView Alamat = findViewById(R.id.detailMitraAlamat);
-        ImageView photo = findViewById(R.id.detailMitraimageView);
+//        ImageView photo = findViewById(R.id.detailMitraimageView);
 
         Intent intent = getIntent();
         idMitra = intent.getStringExtra("UserId");
@@ -83,13 +82,17 @@ public class PenjahitDetail extends AppCompatActivity {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.child("jam").getValue()!=null && dataSnapshot.child("alamat").getValue()!=null) {
+                if (dataSnapshot.child("jam").getValue() != null
+                       && dataSnapshot.child("alamat").getValue() != null) {
                     jam = dataSnapshot.child("jam").getValue().toString();
                     Jam.setText(jam);
                     alamat = dataSnapshot.child("alamat").getValue().toString();
                     Alamat.setText(alamat);
                     namaMitra = dataSnapshot.child("usaha").getValue().toString();
                     profilnama.setText(namaMitra);
+
+//                    String image = dataSnapshot.child("image").getValue().toString();
+//                    Glide.with(PenjahitDetail.this).load(image).into(photo);
                 }
 
             }
@@ -99,12 +102,13 @@ public class PenjahitDetail extends AppCompatActivity {
 
             }
         });
-        profilnama.setText(currentUser.getDisplayName());
+//        profilnama.setText(currentUser.getDisplayName());
 
         // now we will use Glide to load user image
         // first we need to import the library
 
-        Glide.with(this).load(currentUser.getPhotoUrl()).into(photo);
+//        Glide.with(this).load(currentUser.getPhotoUrl()).into(photo);
+//        Toast.makeText(this, currentUser.getPhotoUrl()+"", Toast.LENGTH_SHORT).show();
 
 //        Picasso.get().load(model.getImage()).into(holder.imageView);
 
@@ -112,76 +116,73 @@ public class PenjahitDetail extends AppCompatActivity {
     }
 
     @Override
-        protected void onStart()
-        {
-            super.onStart();
+    protected void onStart() {
+        super.onStart();
 
-            FirebaseRecyclerOptions<Products> options =
-                    new FirebaseRecyclerOptions.Builder<Products>()
-                            .setQuery(ProductsRef, Products.class)
-                            .build();
+        FirebaseRecyclerOptions<Products> options =
+                new FirebaseRecyclerOptions.Builder<Products>()
+                        .setQuery(reference, Products.class)
+                        .build();
 
 
-            FirebaseRecyclerAdapter<Products, ProductViewHolder> adapter =
-                    new FirebaseRecyclerAdapter<Products, ProductViewHolder>(options) {
-                        @Override
-                        protected void onBindViewHolder(@NonNull ProductViewHolder holder, int posisition, @NonNull Products model)
-                        {
-                            holder.txtProductName.setText(model.getPname());
-                            holder.txtProductDescription.setText(model.getDescription());
-                            holder.txtProductPrice.setText("Harga = " +  "Rp." + model.getPrice() );
-                            Picasso.get().load(model.getImage()).into(holder.imageView);
+        FirebaseRecyclerAdapter<Products, ProductViewHolder> adapter =
+                new FirebaseRecyclerAdapter<Products, ProductViewHolder>(options) {
+                    @Override
+                    protected void onBindViewHolder(@NonNull ProductViewHolder holder, int posisition, @NonNull Products model) {
+                        holder.txtProductName.setText(model.getPname());
+                        holder.txtProductDescription.setText(model.getDescription());
+                        holder.txtProductPrice.setText("Harga = " + "Rp." + model.getPrice());
+                        if (namaMitra.equals(model.getUsaha()))
+                            Picasso.get().load(model.getImage()).into(photo);
 
-                            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view)
-                                {
-                                    Intent intent = new Intent(PenjahitDetail.this, ProductDetailActivity.class);
-                                    intent.putExtra("pid", model.getPid());
-                                    intent.putExtra("idMitra", idMitra);
-                                    startActivity(intent);
-                                }
-                            });
-                        }
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(PenjahitDetail.this, ProductDetailActivity.class);
+                                intent.putExtra("pid", model.getPid());
+                                intent.putExtra("idMitra", idMitra);
+                                startActivity(intent);
+                            }
+                        });
+                    }
 
-                        @NonNull
-                        @Override
-                        public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_item_layout, parent, false);
-                            ProductViewHolder holder = new ProductViewHolder(view);
-                            return holder;
-                        }
-                    };
+                    @NonNull
+                    @Override
+                    public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_item_layout, parent, false);
+                        ProductViewHolder holder = new ProductViewHolder(view);
+                        return holder;
+                    }
+                };
 //            recyclerView.setAdapter(adapter);
 //            adapter.startListening();
 
-            buat_baru.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(PenjahitDetail.this, BuatBaruActivity.class);
-                    //intent.putExtra("pid", model.getPid());
-                    intent.putExtra("idMitra", idMitra);
-                    intent.putExtra("category", "Buat Baru");
-                    startActivity(intent);
-                    //startActivity(new Intent(PenjahitDetail.this, BuatBaruActivity.class));
-                }
-            });
+        buat_baru.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PenjahitDetail.this, BuatBaruActivity.class);
+                //intent.putExtra("pid", model.getPid());
+                intent.putExtra("idMitra", idMitra);
+                intent.putExtra("category", "Buat Baru");
+                startActivity(intent);
+                //startActivity(new Intent(PenjahitDetail.this, BuatBaruActivity.class));
+            }
+        });
 
-            vermak.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(PenjahitDetail.this, BuatBaruActivity.class);
-                    //intent.putExtra("pid", model.getPid());
-                    intent.putExtra("idMitra", idMitra);
-                    intent.putExtra("category", "Vermak");
-                    startActivity(intent);
-                    //startActivity(new Intent(PenjahitDetail.this, BuatBaruActivity.class));
-                }
-            });
-
-        }
-
-
+        vermak.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PenjahitDetail.this, BuatBaruActivity.class);
+                //intent.putExtra("pid", model.getPid());
+                intent.putExtra("idMitra", idMitra);
+                intent.putExtra("category", "Vermak");
+                startActivity(intent);
+                //startActivity(new Intent(PenjahitDetail.this, BuatBaruActivity.class));
+            }
+        });
 
     }
+
+
+}
 

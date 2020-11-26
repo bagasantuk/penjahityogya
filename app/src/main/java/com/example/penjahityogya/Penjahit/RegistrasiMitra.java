@@ -38,7 +38,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
@@ -54,6 +56,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import static com.example.penjahityogya.PlacePickerActivity.REQUEST_PLACE_PICKER;
 
@@ -87,7 +92,7 @@ public class RegistrasiMitra extends AppCompatActivity implements OnMapReadyCall
     ImageView ImgMitraPhoto;
     static int PReqCode = 1 ;
     static int REQUESCODE = 1 ;
-    Uri pickedImgUri;
+    Uri pickedImgUri,ImageUri;
 
     private EditText mitraEmail,mitraPassword,mitraPAssword2,mitraUsaha,mitraTelp,mitraAlamat,mitraJam;
     private ProgressBar loadingProgress;
@@ -96,6 +101,9 @@ public class RegistrasiMitra extends AppCompatActivity implements OnMapReadyCall
     private DatabaseReference mDatabase;
     FirebaseDatabase rootNode;
     DatabaseReference reference;
+    private StorageReference ProductImagesRef;
+    String downloadImageUrl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -279,9 +287,10 @@ public class RegistrasiMitra extends AppCompatActivity implements OnMapReadyCall
         String mitrausaha = mitraUsaha.getText().toString();
 
         // membuat User admin baru
-        writeNewmitra(mitra.getUid(), mitraUsaha.getText().toString(), mitraEmail.getText().toString(),mitraTelp.getText().toString(),mitraPassword.getText().toString(), mitraAlamat.getText().toString(), mitraJam.getText().toString(), resAlamat.getLatitude(), resAlamat.getLongitude() );
+        writeNewmitra(mitra.getUid(), mitraUsaha.getText().toString(), mitraEmail.getText().toString(),mitraTelp.getText().toString(),mitraPassword.getText().toString(), mitraAlamat.getText().toString(), mitraJam.getText().toString(), resAlamat.getLatitude(), resAlamat.getLongitude());
 
         // Go to MainActivity
+        FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(RegistrasiMitra.this, LoginMitra.class));
         finish();
     }
@@ -309,6 +318,7 @@ public class RegistrasiMitra extends AppCompatActivity implements OnMapReadyCall
                                 .build();
 
 
+
                         currentUser.updateProfile(profleUpdate)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
@@ -316,8 +326,9 @@ public class RegistrasiMitra extends AppCompatActivity implements OnMapReadyCall
 
                                         if (task.isSuccessful()) {
                                             // user info updated successfully
+
                                             showMessage("Register Complete");
-                                            updateUI();
+//                                            updateUI();
                                         }
 
                                     }
@@ -335,6 +346,7 @@ public class RegistrasiMitra extends AppCompatActivity implements OnMapReadyCall
     }
     private void updateUI() {
         Intent homeActivity = new Intent(getApplicationContext(), LoginMitra.class);
+        FirebaseAuth.getInstance().signOut();
         startActivity(homeActivity);
         finish();
     }
@@ -374,6 +386,7 @@ public class RegistrasiMitra extends AppCompatActivity implements OnMapReadyCall
             // we need to save its reference to a Uri variable
             pickedImgUri = data.getData() ;
             ImgMitraPhoto.setImageURI(pickedImgUri);
+            downloadImageUrl = pickedImgUri.toString();
 
 
         }

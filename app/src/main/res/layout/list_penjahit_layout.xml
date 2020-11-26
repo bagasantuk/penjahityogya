@@ -20,6 +20,15 @@
             android:text="Nama Penjahit"
             android:textSize="20dp"
             android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/list_notelp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/list_penjahit"
+            android:text="No Telepon"
+            android:textSize="16dp"
+            android:textStyle="bold" />
         <TextView
             android:id="@+id/list_jam"
             android:layout_width="match_parent"
@@ -27,7 +36,7 @@
             android:text="Jam Oprasional"
             android:textSize="16dp"
             android:textStyle="bold"
-            android:layout_below="@id/list_penjahit"/>
+            android:layout_below="@id/list_notelp"/>
 
         <TextView
             android:layout_width="match_parent"
