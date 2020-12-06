@@ -168,9 +168,9 @@ public class RegistrasiActivity extends AppCompatActivity {
         writeNewuser(user.getUid(), username, user.getEmail(),userTelp.getText().toString(),userPassword.getText().toString());
 
         // Go to MainActivity
-        FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(RegistrasiActivity.this, LoginActivity.class));
-        finish();
+//        FirebaseAuth.getInstance().signOut();
+//        startActivity(new Intent(RegistrasiActivity.this, LoginActivity.class));
+//        finish();
     }
 
     private void updateUserInfo(final String name, Uri pickedImgUri, final FirebaseUser currentUser) {

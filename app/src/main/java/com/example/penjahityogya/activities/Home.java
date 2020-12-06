@@ -46,6 +46,7 @@ import java.text.DecimalFormat;
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    // deklarasi variable
     FirebaseAuth mAuth;
     FirebaseUser currentUser;
     private DatabaseReference MitraRef, reference;
@@ -54,6 +55,7 @@ public class Home extends AppCompatActivity
     String idMitra, jarak;
     double toKM, latitude, longitude;
     SessionManager sessionManager;
+    //initialisasi
     Location locationA = new Location("Location A");
     Location locationB = new Location("Location B");
 
@@ -104,11 +106,13 @@ public class Home extends AppCompatActivity
 
         updateNavHeader();
 
-        //tampilan produk
+        //tampilan list produk
         recyclerView = findViewById(R.id.recycle_menu);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+
+        //initialisasi untuk database lokasi
         reference = FirebaseDatabase.getInstance().getReference().child("Data").child(currentUser.getUid());
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -136,7 +140,7 @@ public class Home extends AppCompatActivity
                         .setQuery(MitraRef, Mitra.class)
                         .build();
 
-
+//menampilkan data recycler
         FirebaseRecyclerAdapter<Mitra, MitraViewHolder> adapter =
                 new FirebaseRecyclerAdapter<Mitra, MitraViewHolder>(options) {
                     @Override
@@ -145,7 +149,7 @@ public class Home extends AppCompatActivity
                         holder.txtNotelp.setText("No Telepon : " + mitra.getTelp());
                         holder.txtJam.setText("Jam Operasional : " + mitra.getJam());
                         holder.txtAlamat.setText("Alamat : " +mitra.getAlamat());
-
+//menampilkan menghitung jarak
                         if (mitra.getLatitude() != null && mitra.getLongitude() != null) {
                             locationA.setLatitude(latitude);
                             locationA.setLongitude(longitude);
@@ -157,10 +161,12 @@ public class Home extends AppCompatActivity
                             jarak = new DecimalFormat("##.##").format(toKM);
                             holder.txtJarak.setText("Jarak : " + jarak + " KM");
                         }
+                        //agar list nya bisa di click
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 Intent intent = new Intent(Home.this, PenjahitDetail.class);
+                                //menghitung jarak list yang diklik
                                 if (mitra.getLatitude() != null && mitra.getLongitude() != null) {
                                     locationA.setLatitude(latitude);
                                     locationA.setLongitude(longitude);

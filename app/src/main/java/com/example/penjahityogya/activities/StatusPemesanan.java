@@ -168,7 +168,7 @@ public class StatusPemesanan extends AppCompatActivity implements OnMapReadyCall
                         Status = dataSnapshot.child("status").getValue().toString();
                         idMitra = dataSnapshot.child("mitraId").getValue().toString();
                         txtTotalAmount.setText("Total = Rp. " +dataSnapshot.child("total").getValue().toString());
-                        if (Status.equals("sudah")) {
+                        if (Status.equals("sudah") || Status.equals("Input")) {
                             batal.setVisibility(View.INVISIBLE);
                             Status ="Sedang Diproses...";
                         } else if (Status.equals("belum")) {
@@ -218,6 +218,8 @@ public class StatusPemesanan extends AppCompatActivity implements OnMapReadyCall
                 DatabaseReference hapus = FirebaseDatabase.getInstance().getReference().child("Orderan");
                 hapus.child("User View").child(currentUser.getUid()).child(idMitra).child(productID).removeValue();
                 hapus.child("Mitra View").child(idMitra).child(currentUser.getUid()).child(productID).removeValue();
+                hapus.child("Temp").child(currentUser.getUid()).child(idMitra).removeValue();
+
                 DatabaseReference hapus2 = FirebaseDatabase.getInstance().getReference();
                 hapus2.child("ambilId").child(idMitra).child(currentUser.getUid()).removeValue();
                 Intent intent = new Intent(StatusPemesanan.this, Home.class);

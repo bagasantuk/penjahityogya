@@ -290,9 +290,9 @@ public class RegistrasiMitra extends AppCompatActivity implements OnMapReadyCall
         writeNewmitra(mitra.getUid(), mitraUsaha.getText().toString(), mitraEmail.getText().toString(),mitraTelp.getText().toString(),mitraPassword.getText().toString(), mitraAlamat.getText().toString(), mitraJam.getText().toString(), resAlamat.getLatitude(), resAlamat.getLongitude());
 
         // Go to MainActivity
-        FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(RegistrasiMitra.this, LoginMitra.class));
-        finish();
+//        FirebaseAuth.getInstance().signOut();
+//        startActivity(new Intent(RegistrasiMitra.this, LoginMitra.class));
+//        finish();
     }
 
     private void updateMitraInfo(final String usaha, Uri pickedImgUri, final FirebaseUser currentUser) {
@@ -328,7 +328,7 @@ public class RegistrasiMitra extends AppCompatActivity implements OnMapReadyCall
                                             // user info updated successfully
 
                                             showMessage("Register Complete");
-//                                            updateUI();
+                                            updateUI();
                                         }
 
                                     }

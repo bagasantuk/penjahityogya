@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.penjahityogya.Penjahit.DetailPemesanan;
+import com.example.penjahityogya.Penjahit.Home_mitra;
 import com.example.penjahityogya.R;
 import com.example.penjahityogya.ViewHolder.RiwayatViewHolder;
 import com.example.penjahityogya.ViewHolder.StatusViewHolder;
@@ -31,6 +33,7 @@ public class Riwayat extends AppCompatActivity implements NavigationView.OnNavig
     private RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     String idMitra;
+    private long backPressedTime;
 
 
     @Override
@@ -88,6 +91,14 @@ public class Riwayat extends AppCompatActivity implements NavigationView.OnNavig
         recyclerView.setAdapter(adapter);
         adapter.startListening();
 
+    }
+    @Override
+    public void onBackPressed() {
+        if (backPressedTime + 1000 > System.currentTimeMillis()) {
+            Intent intent = new Intent(Riwayat.this, Home.class);
+            startActivity(intent);
+        }
+        backPressedTime = System.currentTimeMillis();
     }
 
     @Override

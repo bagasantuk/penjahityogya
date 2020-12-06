@@ -55,7 +55,7 @@ public class statuspemesananisimitra extends AppCompatActivity{
         Intent in = getIntent();
 //        idMitra = in.getStringExtra("idMitra");
 
-        OrderRef = FirebaseDatabase.getInstance().getReference().child("Orderan").child("User View").child(currentUser.getUid());
+//        OrderRef = FirebaseDatabase.getInstance().getReference().child("Orderan").child("User View").child(currentUser.getUid()).child(idMitra);
 
         //tampilan daftar orderan
         recyclerView = findViewById(R.id.recycle_isimitra);

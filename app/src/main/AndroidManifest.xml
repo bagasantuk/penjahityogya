@@ -19,7 +19,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.Riwayat"></activity>
+        <activity android:name=".Penjahit.Menampilkan_bawahan"></activity>
+        <activity android:name=".Penjahit.Menampilkan_atasan" />
+        <activity android:name=".Penjahit.Menampilkan_ukuran" />
+        <activity android:name=".Penjahit.ListUkuran" />
+        <activity android:name=".Penjahit.Bawahan" />
+        <activity android:name=".Penjahit.Atasan" />
+        <activity android:name=".Penjahit.Input_Ukuran" />
+        <activity android:name=".Chat_Pengembang" />
+        <activity android:name=".activities.Riwayat" />
         <activity android:name=".activities.statuspemesananisimitra" />
         <activity android:name=".activities.StatusPemesanan" />
         <activity android:name=".Penjahit.DetailPemesanan" />
@@ -72,15 +80,13 @@
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.PenjahitActivity" />
         <activity android:name=".activities.RegistrasiActivity" />
-        <activity android:name=".activities.LoginActivity"/>
+        <activity android:name=".activities.LoginActivity" />
+        <activity android:name=".activities.SplashScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-
-        <activity android:name=".activities.SplashScreen" >
-    <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-
-        <category android:name="android.intent.category.LAUNCHER" />
-    </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".activities.Pilih_Lokasi_Pengguna" />
         <activity android:name=".PlacePickerActivity" />

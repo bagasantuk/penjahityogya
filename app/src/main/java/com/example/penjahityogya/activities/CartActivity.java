@@ -47,7 +47,7 @@ public class CartActivity extends AppCompatActivity implements Serializable {
     private int overTotalPrice = 0;
     private SessionManager sessionManager;
     DatabaseReference reference;
-    String latitude, longitude, alamat, telp, nama,idMitra;
+    String latitude, longitude, alamat, telp, nama, idMitra;
 
 
     @Override
@@ -83,96 +83,96 @@ public class CartActivity extends AppCompatActivity implements Serializable {
         idMitra = usersDetails.get(SessionManager.KEY_IDMITRA); // contoh ambil data dari HashMap
 
         final DatabaseReference cartListRef = FirebaseDatabase.getInstance().getReference().child("Cart List");
-
-        FirebaseRecyclerOptions<Cart> options =
-                new FirebaseRecyclerOptions.Builder<Cart>()
-                        .setQuery(cartListRef.child("User View")
-                                .child(currentUser.getUid())
-                                .child("Products").child(idMitra), Cart.class)
-                        .build();
+        if (idMitra != null) {
+            FirebaseRecyclerOptions<Cart> options =
+                    new FirebaseRecyclerOptions.Builder<Cart>()
+                            .setQuery(cartListRef.child("User View")
+                                    .child(currentUser.getUid())
+                                    .child("Products").child(idMitra), Cart.class)
+                            .build();
 //         FirebaseRecyclerOptions<Cart> options =
 //                 new FirebaseRecyclerOptions.Builder<Cart>()
 //                 .setQuery(cartListRef, Cart.class).build();
 
 
-        FirebaseRecyclerAdapter<Cart, CartViewHolder> adapter
-                = new FirebaseRecyclerAdapter<Cart, CartViewHolder>(options) {
-            int oneTypeProductPrice;
+            FirebaseRecyclerAdapter<Cart, CartViewHolder> adapter
+                    = new FirebaseRecyclerAdapter<Cart, CartViewHolder>(options) {
+                int oneTypeProductPrice;
 
-            @Override
-            protected void onBindViewHolder(@NonNull CartViewHolder holder, int posisition, @NonNull Cart model) {
-                int hargabahan = (Integer.valueOf(model.getQuantity()) * Integer.valueOf(model.getHargabahan()));
-                holder.txtProductQuantity.setText("= " + model.getQuantity());
-                holder.txtProductPrice.setText("Harga = Rp. " + model.getPrice() + "+" + model.getHargabahan());
-                holder.txtProductName.setText(model.getPname());
+                @Override
+                protected void onBindViewHolder(@NonNull CartViewHolder holder, int posisition, @NonNull Cart model) {
+                    int hargabahan = (Integer.valueOf(model.getQuantity()) * Integer.valueOf(model.getHargabahan()));
+                    holder.txtProductQuantity.setText("= " + model.getQuantity());
+                    holder.txtProductPrice.setText("Harga = Rp. " + model.getPrice() + "+" + model.getHargabahan());
+                    holder.txtProductName.setText(model.getPname());
 //menampilkan total price
 
-                if (model.getPrice() != null)
-                    oneTypeProductPrice = ((Integer.valueOf(model.getPrice()))) * Integer.valueOf(model.getQuantity());
-                overTotalPrice = overTotalPrice + oneTypeProductPrice + hargabahan;
-                txtTotalAmount.setText("Total = Rp. " + String.valueOf(overTotalPrice));
+                    if (model.getPrice() != null)
+                        oneTypeProductPrice = ((Integer.valueOf(model.getPrice()))) * Integer.valueOf(model.getQuantity());
+                    overTotalPrice = overTotalPrice + oneTypeProductPrice + hargabahan;
+                    txtTotalAmount.setText("Total = Rp. " + String.valueOf(overTotalPrice));
 
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        CharSequence options[] = new CharSequence[]
-                                {
-                                        "Edit",
-                                        "Remove"
-                                };
-                        AlertDialog.Builder builder = new AlertDialog.Builder(CartActivity.this);
-                        builder.setTitle("Cart Options:");
+                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            CharSequence options[] = new CharSequence[]
+                                    {
+                                            "Edit",
+                                            "Remove"
+                                    };
+                            AlertDialog.Builder builder = new AlertDialog.Builder(CartActivity.this);
+                            builder.setTitle("Cart Options:");
 
-                        builder.setItems(options, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int i) {
-                                if (i == 0) {
-                                    Intent intent = new Intent(CartActivity.this, ProductDetailActivity.class);
-                                    intent.putExtra("idMitra", model.getMitraId());
-                                    intent.putExtra("pid", model.getPid());
-                                    intent.putExtra("category", model.getCategory());
-                                    startActivity(intent);
-                                }
-                                if (i == 1) {
-                                    cartListRef.child("User View")
-                                            .child(currentUser.getUid())
-                                            .child("Products")
-                                            .child(model.getMitraId())
-                                            .child(model.getPid())
-                                            .removeValue()
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        Toast.makeText(CartActivity.this, "Item Removed Successfully...", Toast.LENGTH_SHORT).show();
-                                                        Intent intent = new Intent(CartActivity.this, Home.class);
-                                                        startActivity(intent);
+                            builder.setItems(options, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int i) {
+                                    if (i == 0) {
+                                        Intent intent = new Intent(CartActivity.this, ProductDetailActivity.class);
+                                        intent.putExtra("idMitra", model.getMitraId());
+                                        intent.putExtra("pid", model.getPid());
+                                        intent.putExtra("category", model.getCategory());
+                                        startActivity(intent);
+                                    }
+                                    if (i == 1) {
+                                        cartListRef.child("User View")
+                                                .child(currentUser.getUid())
+                                                .child("Products")
+                                                .child(model.getMitraId())
+                                                .child(model.getPid())
+                                                .removeValue()
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()) {
+                                                            Toast.makeText(CartActivity.this, "Item Removed Successfully...", Toast.LENGTH_SHORT).show();
+                                                            Intent intent = new Intent(CartActivity.this, Home.class);
+                                                            startActivity(intent);
+                                                        }
+
                                                     }
+                                                });
+                                    }
 
-                                                }
-                                            });
                                 }
+                            });
+                            builder.show();
+                        }
+                    });
 
-                            }
-                        });
-                        builder.show();
-                    }
-                });
+                }
 
-            }
+                @NonNull
+                @Override
+                public CartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cart_item_layout, parent, false);
+                    CartViewHolder holder = new CartViewHolder(view);
+                    return holder;
+                }
+            };
 
-            @NonNull
-            @Override
-            public CartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cart_item_layout, parent, false);
-                CartViewHolder holder = new CartViewHolder(view);
-                return holder;
-            }
-        };
-
-        recyclerView.setAdapter(adapter);
-        adapter.startListening();
-
+            recyclerView.setAdapter(adapter);
+            adapter.startListening();
+        }
         NextProcessBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

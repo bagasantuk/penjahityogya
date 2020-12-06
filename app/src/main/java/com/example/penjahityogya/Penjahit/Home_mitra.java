@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
+import com.example.penjahityogya.Chat_Pengembang;
 import com.example.penjahityogya.R;
 import com.example.penjahityogya.ViewHolder.MitraViewHolder;
 import com.example.penjahityogya.ViewHolder.OrderViewHolder;
@@ -158,6 +159,8 @@ public class Home_mitra extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+            Intent intent = new Intent(Home_mitra.this, Home_mitra.class);
+            startActivity(intent);
         } else {
             super.onBackPressed();
         }
@@ -200,7 +203,12 @@ public class Home_mitra extends AppCompatActivity
         } else if (id == R.id.nav_mitraproduk) {
             Intent intent = new Intent(Home_mitra.this, Produk.class);
             startActivity(intent);
-        } else if (id == R.id.nav_mitraabout) {
+        }else if (id == R.id.nav_mitraukuran) {
+            Intent intent = new Intent(Home_mitra.this, ListUkuran.class);
+            startActivity(intent);
+        }else if (id == R.id.nav_mitrachat) {
+            Intent intent = new Intent(Home_mitra.this, Chat_Pengembang.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_mitralogout) {
             FirebaseAuth.getInstance().signOut();

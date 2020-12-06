@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Penjahit.Menampilkan_atasan">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/headerAtasan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:text="Ukuran Ataasan"
+                android:textAlignment="center"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:background="@color/colorPrimary"/>
+
+            <TextView
+                android:id="@+id/bahu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/headerAtasan"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="30dp"
+                android:text="Bahu "
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edtbahu"
+                android:layout_width="136dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/headerAtasan"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="25dp"
+                android:layout_marginRight="50dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:hint="CM" />
+
+            <TextView
+                android:id="@+id/dada"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/bahu"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="25dp"
+                android:text="Dada "
+                android:textSize="24sp"
+                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/edtdada"
+                android:layout_width="136dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edtbahu"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="50dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:hint="CM" />
+            <TextView
+                android:id="@+id/leher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/dada"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="25dp"
+                android:text="Leher "
+                android:textSize="24sp"
+                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/edtleher"
+                android:layout_width="136dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edtdada"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="50dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:hint="CM" />
+            <TextView
+                android:id="@+id/ketiak"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/leher"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="25dp"
+                android:text="Ketiak "
+                android:textSize="24sp"
+                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/edtketiak"
+                android:layout_width="136dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edtleher"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="50dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:hint="CM" />
+            <TextView
+                android:id="@+id/perut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ketiak"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="25dp"
+                android:text="Perut "
+                android:textSize="24sp"
+                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/edtperut"
+                android:layout_width="136dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edtketiak"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="50dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:hint="CM" />
+            <TextView
+                android:id="@+id/atspinggul"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/perut"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="25dp"
+                android:text="Pinggul "
+                android:textSize="24sp"
+                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/edtatspinggul"
+                android:layout_width="136dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edtperut"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="50dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:hint="CM" />
+            <TextView
+                android:id="@+id/pergelangantngn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/atspinggul"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="25dp"
+                android:text="Pergelangan "
+                android:textSize="24sp"
+                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/edtpergelangantngn"
+                android:layout_width="136dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edtatspinggul"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="50dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:hint="CM" />
+            <TextView
+                android:id="@+id/panjangtngn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pergelangantngn"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="25dp"
+                android:text="Panjang tangan "
+                android:textSize="24sp"
+                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/edtpanjangtngn"
+                android:layout_width="136dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edtpergelangantngn"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="50dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:hint="CM" />
+            <TextView
+                android:id="@+id/panjangbaju"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/panjangtngn"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="25dp"
+                android:text="Panjang "
+                android:textSize="24sp"
+                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/edtpanjangbaju"
+                android:layout_width="136dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edtpanjangtngn"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="50dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:hint="CM" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

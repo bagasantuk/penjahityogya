@@ -15,11 +15,15 @@
         <item
             android:id="@+id/nav_mitraproduk"
             android:icon="@drawable/ic_shopping_basket_black_24dp"
-            android:title="Produk" />
+            android:title="Tambah Produk" />
         <item
-            android:id="@+id/nav_mitraabout"
-            android:icon="@drawable/ic_info_outline_black_24dp"
-            android:title="About" />
+            android:id="@+id/nav_mitraukuran"
+            android:icon="@drawable/ic_info_black_24dp"
+            android:title="Ukuran Pelanggan" />
+        <item
+            android:id="@+id/nav_mitrachat"
+            android:icon="@drawable/ic_chat_bubble_black_24dp"
+            android:title="Chat Pengembang" />
         <item
             android:id="@+id/nav_mitralogout"
             android:icon="@drawable/ic_exit_to_app_black_24dp"
